@@ -15,6 +15,14 @@ html, body {
     height: 100%;
 }
 
+@font-face {
+    font-family: 'MundialBlack';
+    src: url('./assets/fonts/MundialBlack.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

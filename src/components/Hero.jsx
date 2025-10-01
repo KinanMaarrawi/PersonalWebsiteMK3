@@ -24,16 +24,18 @@ const Header = () => (
             mouseStrength={0.5}
             pageLoadAnimation={true}
             brightness={0.6}
+            bottomFade={1.0}
         />
-        <div className="absolute inset-0 flex items-center justify-center z-10 h-full w-full">
+        <div className="absolute inset-0 flex-col items-center justify-center z-10 h-full w-full">
             <ASCIIText
-            text="Hala!"
+            text="*اهلا وسهلا"
             enableWaves={true}
             textColor="#fdf9f3"
-            asciiFontSize={12}
-            textFontSize={200}
+            asciiFontSize={15}
+            textFontSize={100}
             planeBaseHeight={8}
         />
+            <p className="text-[#fdf9f3] text-3xl" style={{ fontFamily: 'MundialBlack' }}>*Greetings, for my English speakers</p>
         </div>
 
     </section>
