@@ -1,13 +1,11 @@
 // About.jsx
-import React from 'react';
+import React from "react";
+import DomeGallery from "./DomeGallery";
 
 export default function About() {
     return (
-        <section
-            className="w-full min-h-screen bg-black text-white flex flex-col items-center justify-center p-8"
-            style={{ backgroundColor: '#000000' }} // explicit black fallback
-        >
-
-        </section>
+        <div style={{ width: '100vw', height: '100vh', backgroundColor: 'black' }}>
+            <DomeGallery />
+        </div>
     );
 }

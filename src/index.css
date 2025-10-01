@@ -13,7 +13,15 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
+    color: #fff;
 }
+
+body {
+    background-color: black;
+    color: white;
+    overflow-x: hidden;
+}
+
 
 @font-face {
     font-family: 'MundialBlack';
