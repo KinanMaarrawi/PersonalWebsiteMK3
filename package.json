@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ebay/nice-modal-react": "^1.2.13",
+    "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "^4.1.13",
     "@use-gesture/react": "^10.3.1",
+    "antd": "^5.27.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.22",
+    "gsap": "^3.13.0",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.22",
@@ -23,6 +28,7 @@
     "ogl": "^1.0.11",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
     "three": "^0.180.0"
   },

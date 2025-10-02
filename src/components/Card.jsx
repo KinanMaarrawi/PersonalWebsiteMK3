@@ -1,42 +1,37 @@
-import React, { useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
-import { TextureLoader } from "three";
-import { useLoader } from "@react-three/fiber";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-export default function Card({ position, image, onClick }) {
-    const meshRef = useRef();
-    const texture = useLoader(TextureLoader, image || "https://picsum.photos/400/600?random=999");
-    const [hovered, setHovered] = useState(false);
-
-    // Floating and hover animation
-    useFrame((state) => {
-        if (!meshRef.current) return;
-
-        // Smooth scale
-        const targetScale = hovered ? 1.2 : 1;
-        meshRef.current.scale.x += (targetScale - meshRef.current.scale.x) * 0.1;
-        meshRef.current.scale.y += (targetScale - meshRef.current.scale.y) * 0.1;
-
-        // Slight floating motion
-        const t = state.clock.getElapsedTime();
-        meshRef.current.position.y = position[1] + Math.sin(t + position[0]) * 0.1;
-        meshRef.current.position.x = position[0] + Math.sin(t + position[2]) * 0.05;
-
-        // Keep card facing camera
-        meshRef.current.rotation.y = 0;
-        meshRef.current.rotation.x = 0;
-    });
-
+function Card({ className, ...props }) {
     return (
-        <mesh
-            ref={meshRef}
-            position={position}
-            onPointerOver={() => setHovered(true)}
-            onPointerOut={() => setHovered(false)}
-            onClick={onClick}
-        >
-            <planeGeometry args={[1, 1.5]} />
-            <meshStandardMaterial map={texture} />
-        </mesh>
+        <div
+            className={cn(
+                "bg-gray-900 text-gray-200 flex flex-col rounded-xl border border-gray-800 shadow-lg overflow-hidden cursor-pointer transition-all duration-300 ease-in-out",
+                className
+            )}
+            {...props}
+        />
     );
 }
+
+function CardHeader({ className, ...props }) {
+    return (
+        <div
+            className={cn("px-4 py-3", className)}
+            {...props}
+        />
+    );
+}
+
+function CardTitle({ className, ...props }) {
+    return (
+        <div className={cn("text-lg font-bold text-purple-400", className)} {...props} />
+    );
+}
+
+function CardDescription({ className, ...props }) {
+    return (
+        <div className={cn("text-gray-300 text-sm mt-1", className)} {...props} />
+    );
+}
+
+export { Card, CardHeader, CardTitle, CardDescription };
