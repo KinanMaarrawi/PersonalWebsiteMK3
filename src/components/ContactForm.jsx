@@ -19,7 +19,7 @@ export default function ContactForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("/.netlify/functions/sendEmail", {
+            const res = await fetch("/.netlify/functions/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, message }),
