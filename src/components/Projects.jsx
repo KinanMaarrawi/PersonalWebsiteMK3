@@ -7,19 +7,19 @@ import RotatingText from "./RotatingText.jsx";
 // Placeholder project data
 const projects = [
     {
-        title: "Project One",
-        image: "/1.JPEG",
-        github: "https://github.com/username/project-one",
+        title: "This Website",
+        image: "/9.png",
+        github: "https://github.com/KinanMaarrawi/PersonalWebsiteMK3",
     },
     {
-        title: "Project Two",
-        image: "/2.JPEG",
-        github: "https://github.com/username/project-two",
+        title: "Dorz 'Book a Ride'",
+        image: "/8.png",
+        github: "https://github.com/KinanMaarrawi/DorzMVP",
     },
     {
-        title: "Project Three",
-        image: "/3.JPEG",
-        github: "https://github.com/username/project-three",
+        title: "PM_CLI",
+        image: "/7.png",
+        github: "https://github.com/KinanMaarrawi/PM_CLI",
     },
 ];
 
@@ -47,7 +47,7 @@ export default function Projects() {
                             texts={[
                                 "React",
                                 "JavaScript",
-                                "TailwindCSS",
+                                "Tailwind",
                                 "Python",
                                 "Flask",
                                 "SQL",
@@ -77,6 +77,7 @@ export default function Projects() {
                         </Card>
                     ))}
                 </CardsGrid>
+                <h1>Some of my <span className="text-[#7e3ebe]">top</span> projects</h1>
             </Content>
         </Section>
     );
