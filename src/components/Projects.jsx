@@ -147,18 +147,51 @@ const CardsGrid = styled.div`
 `;
 
 const Card = styled.div`
+    position: relative;
     background-color: #1a1a1a;
     border-radius: 1rem;
     overflow: hidden;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
+
     &:hover {
         transform: translateY(-10px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Only border glow */
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 1rem;
+        padding: 2px; /* thickness of the glow */
+        background: linear-gradient(90deg, #7e3ebe, #ff4fa0, #7e3ebe);
+        background-size: 200% 200%;
+        mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        -webkit-mask-composite: destination-out;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        animation: borderAnimation 3s linear infinite;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
+
+    @keyframes borderAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 `;
+
+
 
 const CardImage = styled.img`
     width: 100%;
