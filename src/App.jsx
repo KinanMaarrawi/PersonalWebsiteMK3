@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Hero from './components/Hero.jsx';
 import About from "@/components/About.jsx";
 import Projects from "@/components/Projects.jsx";
-import ContactForm from "@/components/ContactForm.jsx";
+import Footer from "@/components/Footer.jsx";
 
 export function App() {
     const [visibleSection, setVisibleSection] = useState('hero');
@@ -66,7 +66,7 @@ export function App() {
 
             <Projects/>
 
-            <ContactForm />
+            <Footer />
 
         </div>
     );
