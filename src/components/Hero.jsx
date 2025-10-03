@@ -8,7 +8,7 @@ const Header = () => (
         <FaultyTerminal
             style={{ position: 'absolute', top: 0, left: 0 }}
             scale={1.5}
-            gridMul={[2,1]}
+            gridMul={[2, 1]}
             digitSize={1.5}
             timeScale={0.6}
             pause={false}
@@ -26,18 +26,25 @@ const Header = () => (
             brightness={0.6}
             bottomFade={1.0}
         />
-        <div className="absolute inset-0 flex-col items-center justify-center z-10 h-full w-full">
-            <ASCIIText
+
+        {/* ASCIIText takes full hero space */}
+        <ASCIIText
             text="*اهلا وسهلا"
             enableWaves={true}
             textColor="#fdf9f3"
             asciiFontSize={15}
             textFontSize={100}
             planeBaseHeight={8}
+            className="absolute inset-0"
         />
-            <p className="text-[#fdf9f3] text-3xl" style={{ fontFamily: 'MundialBlack' }}>*Greetings, for my English speakers</p>
-        </div>
 
+        {/* English text below ASCIIText, positioned absolutely */}
+        <p
+            className="absolute w-full text-center text-[#fdf9f3] text-3xl"
+            style={{ fontFamily: 'MundialBlack', bottom: '15%' }}
+        >
+            *Greetings, for my English speakers
+        </p>
     </section>
 );
 
