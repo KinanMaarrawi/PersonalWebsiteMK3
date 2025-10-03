@@ -1,41 +1,173 @@
-import Particles from './Particles.jsx';
-import RotatingText from './RotatingText.jsx';
+import React, { useRef } from "react";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import Particles from "./Particles.jsx";
+import RotatingText from "./RotatingText.jsx";
+
+// Placeholder project data
+const projects = [
+    {
+        title: "Project One",
+        image: "/1.JPEG",
+        github: "https://github.com/username/project-one",
+    },
+    {
+        title: "Project Two",
+        image: "/2.JPEG",
+        github: "https://github.com/username/project-two",
+    },
+    {
+        title: "Project Three",
+        image: "/3.JPEG",
+        github: "https://github.com/username/project-three",
+    },
+];
 
 export default function Projects() {
-    const languages = ['React', 'JavaScript', 'TailwindCSS', 'Python', 'Flask', 'SQL', 'Java', 'Kotlin', 'C'];
+    const rotatingRef = useRef();
 
     return (
-        <div className="projects w-full h-screen relative bg-black overflow-hidden">
-            <Particles
-                speed={0.5}
-                particleColors={['#7e3ebe']}
-                alphaParticles={true}
-                disableRotation={true}
-                particleCount={1000}
-                className="absolute inset-0 z-0"
-            />
-
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center z-10">
-                {/* Static text fixed */}
-                <span className="text-white font-bold text-[6em] mr-[25px]">
-          I work with
-        </span>
-
-                {/* Rotating text with smooth box growth */}
-                <RotatingText
-                    texts={languages}
-                    staggerDuration={0.05}
-                    rotationInterval={3000}
-                    auto={true}
-                    loop={true}
-                    mainClassName="text-white font-bold"
-                    boxColor="#7e3ebe"
-                    boxPadding={16}
-                    textSize="6em"
-                    boxHeightMultiplier={1.2}
-                    borderRadius="1em"
+        <Section>
+            <ParticlesWrapper>
+                <Particles
+                    speed={0.5}
+                    particleColors={["#7e3ebe"]}
+                    alphaParticles={true}
+                    disableRotation={true}
+                    particleCount={1000}
                 />
-            </div>
-        </div>
+            </ParticlesWrapper>
+
+            <Content>
+                <RotatingRow>
+                    <StaticText>I work with</StaticText>
+                    <Box>
+                        <RotatingText
+                            ref={rotatingRef}
+                            texts={[
+                                "React",
+                                "JavaScript",
+                                "TailwindCSS",
+                                "Python",
+                                "Flask",
+                                "SQL",
+                                "Java",
+                                "Kotlin",
+                                "C",
+                            ]}
+                            staggerDuration={0.05}
+                            rotationInterval={4000}
+                            auto={true}
+                            loop={true}
+                            splitBy="characters"
+                            mainClassName="flex"
+                            elementLevelClassName="text-white text-[clamp(3rem,6vw,4rem)]"
+                            initial={{ y: "100%", opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: "-120%", opacity: 0 }}
+                        />
+                    </Box>
+                </RotatingRow>
+
+                <CardsGrid>
+                    {projects.map((proj, idx) => (
+                        <Card key={idx} onClick={() => window.open(proj.github, "_blank")}>
+                            <CardImage src={proj.image} alt={proj.title} />
+                            <CardTitle>{proj.title}</CardTitle>
+                        </Card>
+                    ))}
+                </CardsGrid>
+            </Content>
+        </Section>
     );
 }
+
+// Styled components
+const Section = styled.section`
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ParticlesWrapper = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+`;
+
+const Content = styled.div`
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const RotatingRow = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+`;
+
+const StaticText = styled.span`
+    margin-right: 20px;
+    font-size: clamp(6rem, 6vw, 4rem);
+    color: white;
+    font-weight: bold;
+`;
+
+const Box = styled.div`
+    position: relative;
+    background-color: #7e3ebe;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em;
+    border-radius: 1rem;
+    min-width: 3ch; /* ensures box never disappears */
+`;
+
+const CardsGrid = styled.div`
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    width: 100%;
+`;
+
+const Card = styled.div`
+    background-color: #1a1a1a;
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+`;
+
+const CardImage = styled.img`
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+`;
+
+const CardTitle = styled.h3`
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+`;
