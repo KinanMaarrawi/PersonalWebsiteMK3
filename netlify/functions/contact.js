@@ -1,12 +1,14 @@
+// src/functions/contact.js
+/* global process */
 import nodemailer from "nodemailer";
 
-export async function handler(event, context) {
+export async function handler(event) {
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
 
     try {
-        const { name, email, message } = JSON.parse(event.body);
+        const { name, message } = JSON.parse(event.body);
 
         if (!message) {
             return { statusCode: 400, body: "Message is required" };
@@ -15,14 +17,14 @@ export async function handler(event, context) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: process.env.EMAIL,  // your Gmail
-                pass: process.env.EMAIL_PASS,  // your app password
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASS,
             },
         });
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER, // you receive the email here
+            from: process.env.EMAIL,           // sender
+            to: process.env.EMAIL,             // recipient
             subject: `Contact Form Message${name ? ` from ${name}` : ""}`,
             text: message,
         });
