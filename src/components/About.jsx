@@ -270,10 +270,12 @@ const TextWrapper = styled.div`
     display: flex;
     flex-direction: column;
     color: #fff;
-    overflow: hidden;
+    overflow-y: auto;       /* enable vertical scrolling */
+    flex: 1 1 auto;         /* let it take remaining space in the card */
 
     p {
         font-size: 1.1rem;
+        margin: 0.5rem 0;
     }
 `;
 
