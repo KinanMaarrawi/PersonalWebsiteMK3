@@ -252,15 +252,17 @@ const PopupCard = styled.div`
     flex-direction: column;
     background: #1a1a1a;
     border-radius: 1rem;
-    overflow: hidden;
-    width: 500px;
-    max-height: 90%;
+    overflow-y: auto;      /* scroll the whole card */
+    width: 90%;            /* responsive width */
+    max-width: 500px;
+    max-height: 90vh;      /* max height relative to viewport */
 `;
 
 /** Image inside pop-up card */
 const CardImage = styled.img`
     width: 100%;
-    height: 100%;
+    height: auto;          /* let image scale naturally */
+    max-height: 50vh;      /* optional: don't let it dominate the card */
     object-fit: cover;
 `;
 
@@ -270,14 +272,13 @@ const TextWrapper = styled.div`
     display: flex;
     flex-direction: column;
     color: #fff;
-    overflow-y: auto;       /* enable vertical scrolling */
-    flex: 1 1 auto;         /* let it take remaining space in the card */
 
     p {
         font-size: 1.1rem;
         margin: 0.5rem 0;
     }
 `;
+
 
 /** Title of the pop-up card */
 const CardTitle = styled.h3`
