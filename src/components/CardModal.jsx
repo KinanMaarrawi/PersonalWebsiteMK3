@@ -2,6 +2,25 @@ import { Modal } from 'antd';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import 'antd/dist/reset.css';
 
+/**
+ * CardModal Component
+ *
+ * A reusable modal component that displays a title, optional image, and description.
+ * Uses NiceModal for easy modal management and Ant Design's Modal for UI.
+ *
+ * Props:
+ * @param {string} title - The title displayed at the top of the modal
+ * @param {string} description - The body text or description
+ * @param {string} [image] - Optional URL of an image to display above the description
+ *
+ * Behavior:
+ * - Modal visibility is controlled by NiceModal's useModal hook
+ * - "Close" button hides the modal
+ * - Clicking outside or pressing "Esc" also hides the modal
+ * - After closing, the modal instance is removed
+ *
+ * @returns {JSX.Element}
+ */
 const CardModal = NiceModal.create(({ title, description, image }) => {
     const modal = useModal();
 

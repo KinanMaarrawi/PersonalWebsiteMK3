@@ -24,3 +24,12 @@ html, body {
     font-style: normal;
     font-display: swap;
 }
+
+ul {
+    list-style: none; /* remove bullets */
+    padding: 0;       /* remove default padding */
+    margin: 0;        /* remove default margin */
+}
+li {
+    list-style: none; /* remove bullets from individual items */
+}

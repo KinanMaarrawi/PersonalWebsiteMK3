@@ -1,75 +1,78 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
 import Particles from "./Particles.jsx";
 import RotatingText from "./RotatingText.jsx";
 
-// Placeholder project data
+/**
+ * Projects Component
+ *
+ * Displays a section showcasing the developer's projects.
+ * Features:
+ * - Rotating text indicating technologies the developer works with
+ * - Animated particle background
+ * - Clickable project cards linking to GitHub repos
+ *
+ * Responsive behavior:
+ * - Adjusts layout and font size for small screens
+ */
 const projects = [
-    {
-        title: "This Website",
-        image: "/9.png",
-        github: "https://github.com/KinanMaarrawi/PersonalWebsiteMK3",
-    },
-    {
-        title: "Dorz 'Book a Ride'",
-        image: "/8.png",
-        github: "https://github.com/KinanMaarrawi/DorzMVP",
-    },
-    {
-        title: "PM_CLI",
-        image: "/7.png",
-        github: "https://github.com/KinanMaarrawi/PM_CLI",
-    },
+    { title: "This Website", image: "/9.png", github: "https://github.com/KinanMaarrawi/PersonalWebsiteMK3" },
+    { title: "Dorz 'Book a Ride'", image: "/8.png", github: "https://github.com/KinanMaarrawi/DorzMVP" },
+    { title: "PM_CLI", image: "/7.png", github: "https://github.com/KinanMaarrawi/PM_CLI" },
+    { title: "GWTIT", image: "/10.png", github: "https://github.com/KinanMaarrawi/GWTIT" }
 ];
 
 export default function Projects() {
-    const rotatingRef = useRef();
+    const rotatingRef = useRef(); // Ref for RotatingText component
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    /**
+     * Effect: Updates isSmallScreen state on load and resize
+     * Determines if layout should switch to small screen mode
+     */
+    useEffect(() => {
+        const handleResize = () => setIsSmallScreen(window.innerWidth < 876);
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
         <Section>
+            {/* --- Background particle effect --- */}
             <ParticlesWrapper>
                 <Particles
                     speed={0.5}
                     particleColors={["#7e3ebe"]}
-                    alphaParticles={true}
-                    disableRotation={true}
+                    alphaParticles
+                    disableRotation
                     particleCount={1000}
                 />
             </ParticlesWrapper>
 
+            {/* --- Main content --- */}
             <Content>
-                <RotatingRow>
+                {/* --- Rotating text row --- */}
+                <RotatingRow small={isSmallScreen}>
                     <StaticText>I work with</StaticText>
-                    <Box>
+                    <Box small={isSmallScreen}>
                         <RotatingText
                             ref={rotatingRef}
-                            texts={[
-                                "React",
-                                "JavaScript",
-                                "Tailwind",
-                                "Python",
-                                "Flask",
-                                "SQL",
-                                "Java",
-                                "Kotlin",
-                                "C",
-                            ]}
+                            texts={["React","JavaScript","Tailwind","Python","Flask","SQL","Java","Kotlin","C"]}
                             staggerDuration={0.05}
                             rotationInterval={4000}
-                            auto={true}
-                            loop={true}
+                            auto
+                            loop
                             splitBy="characters"
                             mainClassName="flex"
-                            elementLevelClassName="text-white text-[clamp(3rem,6vw,4rem)]"
-                            initial={{ y: "100%", opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: "-120%", opacity: 0 }}
+                            elementLevelClassName="text-white"
+                            textSize={isSmallScreen ? "2rem" : "4rem"}
                         />
                     </Box>
                 </RotatingRow>
 
-                <CardsGrid>
+                {/* --- Project cards grid --- */}
+                <CardsGrid small={isSmallScreen}>
                     {projects.map((proj, idx) => (
                         <Card key={idx} onClick={() => window.open(proj.github, "_blank")}>
                             <CardImage src={proj.image} alt={proj.title} />
@@ -77,13 +80,15 @@ export default function Projects() {
                         </Card>
                     ))}
                 </CardsGrid>
+
                 <h1>Some of my <span className="text-[#7e3ebe]">top</span> projects</h1>
             </Content>
         </Section>
     );
 }
 
-// Styled components
+// ==================== Styled Components ====================
+
 const Section = styled.section`
     position: relative;
     width: 100%;
@@ -118,12 +123,16 @@ const RotatingRow = styled.div`
     align-items: center;
     gap: 2rem;
     margin-bottom: 4rem;
-    flex-wrap: wrap;
+
+    @media (max-width: 875px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
 `;
 
 const StaticText = styled.span`
-    margin-right: 20px;
-    font-size: clamp(6rem, 6vw, 4rem);
+    font-size: clamp(3rem, 6vw, 6rem);
     color: white;
     font-weight: bold;
 `;
@@ -134,16 +143,21 @@ const Box = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5em 1em;
+    padding: ${props => (props.small ? "0.25em 0.6em" : "0.5em 1em")};
     border-radius: 1rem;
-    min-width: 3ch; /* ensures box never disappears */
+    min-width: 3ch;
 `;
 
 const CardsGrid = styled.div`
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     width: 100%;
+    justify-items: center;
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: 875px) {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 layout on small screens */
+    }
 `;
 
 const Card = styled.div`
@@ -155,23 +169,23 @@ const Card = styled.div`
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 280px;
+    min-height: 280px;
 
     &:hover {
         transform: translateY(-10px);
     }
 
-    /* Only border glow */
     &::after {
         content: '';
         position: absolute;
         inset: 0;
         border-radius: 1rem;
-        padding: 2px; /* thickness of the glow */
+        padding: 2px;
         background: linear-gradient(90deg, #7e3ebe, #ff4fa0, #7e3ebe);
         background-size: 200% 200%;
-        mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: exclude;
         -webkit-mask-composite: destination-out;
         opacity: 0;
@@ -190,8 +204,6 @@ const Card = styled.div`
         100% { background-position: 0% 50%; }
     }
 `;
-
-
 
 const CardImage = styled.img`
     width: 100%;
