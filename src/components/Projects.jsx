@@ -19,7 +19,7 @@ const projects = [
     { title: "This Website", image: "/9.png", github: "https://github.com/KinanMaarrawi/PersonalWebsiteMK3" },
     { title: "Dorz 'Book a Ride'", image: "/8.png", github: "https://github.com/KinanMaarrawi/DorzMVP" },
     { title: "PM_CLI", image: "/7.png", github: "https://github.com/KinanMaarrawi/PM_CLI" },
-    { title: "GWTIT", image: "/10.png", github: "https://github.com/KinanMaarrawi/GWTIT" }
+    { title: "GWTIT", image: "/10.png", github: "https://github.com/KinanMaarrawi/GWTIT" },
     { title: "terra-tui", image: "/11.png", github: "https://github.com/KinanMaarrawi/terra-tui" }
 ];
 
