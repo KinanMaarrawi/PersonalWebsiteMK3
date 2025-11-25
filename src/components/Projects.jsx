@@ -16,7 +16,6 @@ import RotatingText from "./RotatingText.jsx";
  * - Adjusts layout and font size for small screens
  */
 const projects = [
-    { title: "This Website", image: "/9.png", github: "https://github.com/KinanMaarrawi/PersonalWebsiteMK3" },
     { title: "Dorz 'Book a Ride'", image: "/8.png", github: "https://github.com/KinanMaarrawi/DorzMVP" },
     { title: "PM_CLI", image: "/7.png", github: "https://github.com/KinanMaarrawi/PM_CLI" },
     { title: "GWTIT", image: "/10.png", github: "https://github.com/KinanMaarrawi/GWTIT" },
