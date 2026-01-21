@@ -150,15 +150,12 @@ const Box = styled.div`
 `;
 
 const CardsGrid = styled.div`
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
+    max-width: calc(4 * 280px + 3 * 2rem);
     width: 100%;
-    justify-items: center;
-    grid-template-columns: repeat(4, 1fr);
-
-    @media (max-width: 875px) {
-        grid-template-columns: repeat(2, 1fr); /* 2x2 layout on small screens */
-    }
 `;
 
 const Card = styled.div`
