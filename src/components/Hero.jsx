@@ -1,149 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import FaultyTerminal from '@/components/FaultyTerminal.jsx';
-import ASCIIText from "@/components/ASCIIText.jsx";
+﻿import { useEffect, useState } from 'react';
 
-/**
- * Header Component
- *
- * Displays a full-screen header with a glitchy terminal background and animated ASCII text.
- * The ASCII text adjusts its font size and layout based on screen width.
- *
- * Uses:
- * - FaultyTerminal: animated glitchy terminal background
- * - ASCIIText: animated text with wave effects
- */
-const Header = () => {
-    const [screenSize, setScreenSize] = useState('lg'); // sm, md, lg, xl, 2xl
+const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
+const BOOT_TEXT = '> system.status: booting';
 
-    /**
-     * Effect: Detect screen size on load and on resize.
-     * Updates the `screenSize` state according to Tailwind-like breakpoints.
-     */
-    useEffect(() => {
-        const updateSize = () => {
-            const width = window.innerWidth;
-            if (width < 768) setScreenSize('sm');       // Tailwind sm
-            else if (width < 1024) setScreenSize('md'); // Tailwind md
-            else if (width < 1280) setScreenSize('lg'); // Tailwind lg
-            else if (width < 1536) setScreenSize('xl'); // Tailwind xl
-            else setScreenSize('2xl');                  // Tailwind 2xl+
-        };
+export default function Hero() {
+  const [typedCount, setTypedCount] = useState(0);
+  const [dotCount, setDotCount] = useState(0);
+  const [bootOnline, setBootOnline] = useState(false);
+  const [showPanel, setShowPanel] = useState(false);
+  const [panelExpanded, setPanelExpanded] = useState(false);
+  const [revealContent, setRevealContent] = useState(false);
 
-        updateSize();
-        window.addEventListener('resize', updateSize);
-        return () => window.removeEventListener('resize', updateSize);
-    }, []);
-
-    // --- Responsive sizing for ASCII text ---
-    let asciiFontSize, textFontSize, planeBaseHeight;
-
-    switch (screenSize) {
-        case 'sm':
-            asciiFontSize = 6;
-            textFontSize = 200;
-            planeBaseHeight = 15;
-            break;
-        case 'md':
-            asciiFontSize = 10;
-            textFontSize = 80;
-            planeBaseHeight = 5;
-            break;
-        case 'lg':
-            asciiFontSize = 12;
-            textFontSize = 90;
-            planeBaseHeight = 6;
-            break;
-        case 'xl':
-            asciiFontSize = 14;
-            textFontSize = 100;
-            planeBaseHeight = 7;
-            break;
-        case '2xl':
-            asciiFontSize = 16;
-            textFontSize = 120;
-            planeBaseHeight = 8;
-            break;
-        default:
-            asciiFontSize = 15;
-            textFontSize = 100;
-            planeBaseHeight = 8;
+  useEffect(() => {
+    // Run the boot sequence only once per browser session.
+    const seenThisSession = sessionStorage.getItem(BOOT_FLAG_KEY) === '1';
+    if (seenThisSession) {
+      setTypedCount(BOOT_TEXT.length);
+      setBootOnline(true);
+      setShowPanel(true);
+      setPanelExpanded(true);
+      setRevealContent(true);
+      return undefined;
     }
 
-    return (
-        <section className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center text-center">
-            {/* --- Background glitchy terminal --- */}
-            <FaultyTerminal
-                style={{ position: 'absolute', top: 0, left: 0 }}
-                scale={1.5}
-                gridMul={[2, 1]}
-                digitSize={1.5}
-                timeScale={0.6}
-                pause={false}
-                scanlineIntensity={1}
-                glitchAmount={1}
-                flickerAmount={1}
-                noiseAmp={1}
-                chromaticAberration={0}
-                dither={0}
-                curvature={0.3}
-                tint="#7c3abd"
-                mouseReact={true}
-                mouseStrength={0.5}
-                pageLoadAnimation={true}
-                brightness={0.6}
-                bottomFade={1.0}
-            />
+    const timers = [];
+    let rafId = 0;
 
-            {/* --- Animated ASCII Text --- */}
-            {screenSize === 'sm' ? (
-                <>
-                    {/* Split lines for small screens */}
-                    <div className="absolute top-1/4 w-full h-1/4 flex justify-center items-center">
-                        <ASCIIText
-                            key="line1"
-                            text="اهلا"
-                            enableWaves={true}
-                            textColor="#fdf9f3"
-                            asciiFontSize={asciiFontSize}
-                            textFontSize={textFontSize}
-                            planeBaseHeight={planeBaseHeight}
-                        />
-                    </div>
-                    <div className="absolute top-2/4 w-full h-1/4 flex justify-center items-center">
-                        <ASCIIText
-                            key="line2"
-                            text="*وسهلا"
-                            enableWaves={true}
-                            textColor="#fdf9f3"
-                            asciiFontSize={asciiFontSize}
-                            textFontSize={textFontSize}
-                            planeBaseHeight={planeBaseHeight}
-                        />
-                    </div>
-                </>
-            ) : (
-                // Single line for larger screens
-                <ASCIIText
-                    key={screenSize}
-                    text="*اهلا وسهلا"
-                    enableWaves={true}
-                    textColor="#fdf9f3"
-                    asciiFontSize={asciiFontSize}
-                    textFontSize={textFontSize}
-                    planeBaseHeight={planeBaseHeight}
-                    className="absolute inset-0"
-                />
-            )}
+    const typeText = index => {
+      setTypedCount(index);
+      if (index < BOOT_TEXT.length) {
+        timers.push(window.setTimeout(() => typeText(index + 1), 24));
+        return;
+      }
+      runDots(0, 0);
+    };
 
-            {/* --- English greeting --- */}
-            <p
-                className="absolute w-full text-center text-[#fdf9f3] text-xl sm:text-2xl md:text-3xl"
-                style={{ fontFamily: 'MundialBlack', bottom: '15%' }}
-            >
-                *Greetings, for my English speakers
-            </p>
-        </section>
-    );
-};
+    const runDots = (step, loopCount) => {
+      const nextStep = (step % 3) + 1;
+      const nextLoopCount = nextStep === 3 ? loopCount + 1 : loopCount;
+      setDotCount(nextStep);
 
-export default Header;
+      if (nextLoopCount >= 3) {
+        setBootOnline(true);
+        timers.push(
+          window.setTimeout(() => {
+            setShowPanel(true);
+            rafId = requestAnimationFrame(() => setPanelExpanded(true));
+            timers.push(
+              window.setTimeout(() => {
+                setRevealContent(true);
+                sessionStorage.setItem(BOOT_FLAG_KEY, '1');
+              }, 720)
+            );
+          }, 480)
+        );
+        return;
+      }
+
+      timers.push(window.setTimeout(() => runDots(nextStep, nextLoopCount), 90));
+    };
+
+    typeText(0);
+
+    return () => {
+      for (const timer of timers) window.clearTimeout(timer);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  const scrollToSection = sectionId => event => {
+    event.preventDefault();
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const bootingLine = `${BOOT_TEXT.slice(0, typedCount)}${typedCount >= BOOT_TEXT.length ? '.'.repeat(dotCount) : ''}`;
+
+  return (
+    <section className={`hero-shell min-h-screen ${showPanel ? 'hero-has-panel' : 'hero-boot-mode'}`}>
+      <div className="hero-glow" aria-hidden="true" />
+
+      {!showPanel ? (
+        <div className="hero-boot-screen">
+          <p className="hero-boot-status" aria-live="polite">
+            <span className={`hero-boot-line ${bootOnline ? 'is-hidden' : 'is-visible'}`}>{bootingLine}</span>
+            <span className={`hero-boot-line ${bootOnline ? 'is-visible' : 'is-hidden'}`}>&gt; system.status: online</span>
+          </p>
+        </div>
+      ) : null}
+
+      <div className="hero-layout">
+        {showPanel ? (
+          <div className={`hero-panel-shell ${panelExpanded ? 'is-expanded' : ''}`}>
+            <p className={`system-kicker hero-kicker hero-reveal-step hero-step-0 ${revealContent ? 'is-revealed' : ''}`}>&gt; system_boot</p>
+
+            <div className="hero-panel">
+              <div className="hero-panel-grid" aria-hidden="true" />
+
+              <div className="hero-body">
+                <div className="hero-left-column">
+                  <h1 className={`hero-title hero-reveal-step hero-step-1 ${revealContent ? 'is-revealed' : ''}`}>أهلاً وسهلاً</h1>
+
+                  <p className={`hero-subtitle hero-reveal-step hero-step-2 ${revealContent ? 'is-revealed' : ''}`}>
+                    Greetings - for my non-Arab visitors.
+                  </p>
+
+                  <div className="hero-identity">
+                    <p className={`hero-name hero-reveal-step hero-step-3 ${revealContent ? 'is-revealed' : ''}`}>Kinan Maarrawi</p>
+                    <p className={`hero-role hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>CS Student @ UoBD</p>
+                  </div>
+                </div>
+
+                <div className={`hero-right-column hero-reveal-step hero-step-5 ${revealContent ? 'is-revealed' : ''}`}>
+                  <a className="hero-btn hero-btn-stack" href="#about" onClick={scrollToSection('about')}>
+                    About
+                  </a>
+                  <a className="hero-btn hero-btn-stack" href="#projects" onClick={scrollToSection('projects')}>
+                    Projects
+                  </a>
+                  <a className="hero-btn hero-btn-stack" href="#contact" onClick={scrollToSection('contact')}>
+                    Contact
+                  </a>
+                </div>
+              </div>
+
+              <p className={`hero-system hero-reveal-step hero-step-6 ${revealContent ? 'is-revealed' : ''}`}>&gt; system.status: online</p>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
