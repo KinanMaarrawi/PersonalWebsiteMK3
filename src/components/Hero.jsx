@@ -3,6 +3,11 @@
 const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
 const BOOT_TEXT = '> system.status: booting';
 
+const hasBootCompletedThisSession = () => {
+  if (typeof window === 'undefined') return true;
+  return sessionStorage.getItem(BOOT_FLAG_KEY) === '1';
+};
+
 export default function Hero() {
   const [typedCount, setTypedCount] = useState(0);
   const [dotCount, setDotCount] = useState(0);
@@ -10,16 +15,38 @@ export default function Hero() {
   const [showPanel, setShowPanel] = useState(false);
   const [panelExpanded, setPanelExpanded] = useState(false);
   const [revealContent, setRevealContent] = useState(false);
+  const [scrollLocked, setScrollLocked] = useState(() => !hasBootCompletedThisSession());
+
+  useEffect(() => {
+    if (!scrollLocked) return undefined;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyTouchAction = body.style.touchAction;
+
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    body.style.touchAction = 'none';
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.touchAction = prevBodyTouchAction;
+    };
+  }, [scrollLocked]);
 
   useEffect(() => {
     // Run the boot sequence only once per browser session.
-    const seenThisSession = sessionStorage.getItem(BOOT_FLAG_KEY) === '1';
+    const seenThisSession = hasBootCompletedThisSession();
     if (seenThisSession) {
       setTypedCount(BOOT_TEXT.length);
       setBootOnline(true);
       setShowPanel(true);
       setPanelExpanded(true);
       setRevealContent(true);
+      setScrollLocked(false);
       return undefined;
     }
 
@@ -50,6 +77,7 @@ export default function Hero() {
               window.setTimeout(() => {
                 setRevealContent(true);
                 sessionStorage.setItem(BOOT_FLAG_KEY, '1');
+                setScrollLocked(false);
               }, 720)
             );
           }, 480)
@@ -100,7 +128,7 @@ export default function Hero() {
 
               <div className="hero-body">
                 <div className="hero-left-column">
-                  <h1 className={`hero-title hero-reveal-step hero-step-1 ${revealContent ? 'is-revealed' : ''}`}>أهلاً وسهلاً</h1>
+                  <h1 className={`hero-title hero-reveal-step hero-step-1 ${revealContent ? 'is-revealed' : ''}`}>{'أهلاً وسهلاً'}</h1>
 
                   <p className={`hero-subtitle hero-reveal-step hero-step-2 ${revealContent ? 'is-revealed' : ''}`}>
                     Greetings - for my non-Arab visitors.
@@ -133,3 +161,4 @@ export default function Hero() {
     </section>
   );
 }
+
