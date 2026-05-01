@@ -1,40 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-
-const projects = [
-  {
-    title: "Dorz 'Book a Ride'",
-    image: '/8.png',
-    github: 'https://github.com/KinanMaarrawi/DorzMVP',
-    description: 'Ride-booking MVP built for my Internship @ DORZ.',
-    tech: 'Kotlin'
-  },
-  {
-    title: 'PM_CLI',
-    image: '/7.png',
-    github: 'https://github.com/KinanMaarrawi/PM_CLI',
-    description: 'Terminal password manager built to learn C and encryption.',
-    tech: 'C'
-  },
-  {
-    title: 'GWTIT',
-    image: '/10.png',
-    github: 'https://github.com/KinanMaarrawi/GWTIT',
-    description: 'Flask-based API project that aggregates geographic data for a country in a simple web interface.',
-    tech: 'Flask'
-  },
-  {
-    title: 'terra-tui',
-    image: '/11.png',
-    github: 'https://github.com/KinanMaarrawi/terra-tui',
-    description: 'A procedural terrain explorer and TUI sandbox, built in Haskell.',
-    tech: 'Haskell'
-  }
-];
-
-const stackItems = ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'];
+import { useLanguage } from '../useLanguage.js';
 
 export default function Projects() {
+  const { content } = useLanguage();
+  const projectsContent = content.projects;
   const stackRef = useRef(null);
   const [stackVisible, setStackVisible] = useState(false);
 
@@ -56,17 +26,17 @@ export default function Projects() {
   }, []);
 
   return (
-    <Section>
+    <Section dir="ltr">
       <Content>
-        <p className="system-kicker projects-kicker">&gt; top_projects</p>
+        <p className="system-kicker projects-kicker">{projectsContent.kicker}</p>
 
         <StackOutput ref={stackRef} className={stackVisible ? 'is-visible' : ''}>
-          <StackCommand>stack:</StackCommand>
-          <StackInline>{stackItems.join(' · ')}</StackInline>
+          <StackCommand>{projectsContent.stackCommand}</StackCommand>
+          <StackInline>{projectsContent.stackItems.join(' · ')}</StackInline>
         </StackOutput>
 
         <CardsGrid>
-          {projects.map(project => (
+          {projectsContent.items.map(project => (
             <Card key={project.title} onClick={() => window.open(project.github, '_blank', 'noopener,noreferrer')}>
               <CardImage src={project.image} alt={project.title} />
               <CardBody>

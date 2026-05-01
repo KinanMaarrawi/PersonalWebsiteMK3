@@ -1,43 +1,47 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLanguage } from '../useLanguage.js';
 
-const COMMANDS = [
-  {
-    id: 'whoami',
-    image: '/4.JPEG',
-    lines: ['>whoami', 'I’m Kinan Maarrawi - a software engineer focused on building systems that feel intentional, not accidental.', 'I build because I like understanding how things are put together. And once I understand them, I want to make them better.', 'Computer Science with Software Engineering (Year 2) @ University of Birmingham Dubai']
-  },
-  {
-    id: 'origin',
-    image: '/5.JPEG',
-    lines: ['>origin', 'From Damascus, Syria', 'Raised in Dubai', 'Building with both worlds in mind', 'Dubai gave me exposure to ambition and scale. Syria gave me perspective. That combination made me value stability, long-term thinking, and building things that last.']
-  },
-  {
-    id: 'interests',
-    image: '/2.JPEG',
-    lines: ['>interests', 'Linux + systems', 'PC hardware + tuning', 'Outside of tech, I\'m into cars, fitness, music and history.']
-  },
-  {
-    id: 'currently',
-    image: '/1.JPEG',
-    lines: ['>currently', 'Focusing on my uni assignments', 'Exploring new languages and frameworks', 'Open to any and all opportunities to learn and grow as a software engineer.']
-  }
-];
+function preloadImage(src) {
+  if (typeof window === 'undefined') return Promise.resolve();
 
-function getCommandById(id) {
-  return COMMANDS.find(command => command.id === id) || COMMANDS[0];
+  return new Promise(resolve => {
+    const image = new Image();
+    image.onload = async () => {
+      try {
+        if (image.decode) await image.decode();
+      } catch {
+        // The image is already loaded; failed decode should not block rendering.
+      }
+      resolve();
+    };
+    image.onerror = resolve;
+    image.src = src;
+  });
 }
 
 export default function About() {
-  const [activeCommandId, setActiveCommandId] = useState(COMMANDS[0].id);
+  const { content } = useLanguage();
+  const aboutContent = content.about;
+  const commands = aboutContent.commands;
+  const [activeCommandId, setActiveCommandId] = useState('whoami');
   const [typedOutput, setTypedOutput] = useState('');
-  const [imageCurrentId, setImageCurrentId] = useState(COMMANDS[0].id);
+  const [imageCurrentId, setImageCurrentId] = useState('whoami');
   const [imagePrevId, setImagePrevId] = useState(null);
 
   const typingVersionRef = useRef(0);
   const imageTimerRef = useRef(0);
+  const imageVersionRef = useRef(0);
   const typingTimerRef = useRef(0);
 
-  const activeCommand = useMemo(() => getCommandById(activeCommandId), [activeCommandId]);
+  const activeCommand = useMemo(() => commands.find(command => command.id === activeCommandId) || commands[0], [activeCommandId, commands]);
+  const imageCurrentCommand = useMemo(() => commands.find(command => command.id === imageCurrentId) || commands[0], [imageCurrentId, commands]);
+  const imagePrevCommand = useMemo(() => commands.find(command => command.id === imagePrevId) || commands[0], [imagePrevId, commands]);
+
+  useEffect(() => {
+    commands.forEach(command => {
+      preloadImage(command.image);
+    });
+  }, [commands]);
 
   useEffect(() => {
     const fullText = activeCommand.lines.join('\n');
@@ -69,13 +73,21 @@ export default function About() {
   useEffect(() => {
     if (imageCurrentId === activeCommandId) return undefined;
 
-    window.clearTimeout(imageTimerRef.current);
-    setImagePrevId(imageCurrentId);
-    setImageCurrentId(activeCommandId);
-    imageTimerRef.current = window.setTimeout(() => setImagePrevId(null), 260);
+    imageVersionRef.current += 1;
+    const version = imageVersionRef.current;
+    const nextCommand = commands.find(command => command.id === activeCommandId) || commands[0];
+
+    preloadImage(nextCommand.image).then(() => {
+      if (version !== imageVersionRef.current) return;
+
+      window.clearTimeout(imageTimerRef.current);
+      setImagePrevId(imageCurrentId);
+      setImageCurrentId(activeCommandId);
+      imageTimerRef.current = window.setTimeout(() => setImagePrevId(null), 260);
+    });
 
     return () => window.clearTimeout(imageTimerRef.current);
-  }, [activeCommandId, imageCurrentId]);
+  }, [activeCommandId, imageCurrentId, commands]);
 
   useEffect(() => {
     return () => {
@@ -87,11 +99,11 @@ export default function About() {
   return (
     <section className="about-terminal-shell">
       <div className="about-ambient-glow" aria-hidden="true" />
-      <p className="system-kicker about-kicker">&gt; profile_terminal</p>
+      <p className="system-kicker about-kicker">{aboutContent.kicker}</p>
       <div className="about-terminal-grid">
         <div className="about-terminal-window">
           <div className="about-terminal-commands" role="tablist" aria-label="Terminal commands">
-            {COMMANDS.map(command => (
+            {commands.map(command => (
               <button
                 key={command.id}
                 type="button"
@@ -105,7 +117,7 @@ export default function About() {
             ))}
           </div>
 
-          <pre className="about-terminal-output" aria-live="polite">
+          <pre className="about-terminal-output" aria-live="polite" dir="auto">
             {typedOutput}
           </pre>
         </div>
@@ -115,16 +127,20 @@ export default function About() {
             {imagePrevId ? (
               <img
                 key={`prev-${imagePrevId}`}
-                src={getCommandById(imagePrevId).image}
+                src={imagePrevCommand.image}
                 alt=""
+                width="960"
+                height="1200"
                 className="about-image-layer is-outgoing"
               />
             ) : null}
 
             <img
               key={`current-${imageCurrentId}`}
-              src={getCommandById(imageCurrentId).image}
-              alt={activeCommand.id}
+              src={imageCurrentCommand.image}
+              alt={imageCurrentCommand.imageAlt}
+              width="960"
+              height="1200"
               className="about-image-layer is-incoming"
             />
           </div>

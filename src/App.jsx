@@ -6,6 +6,7 @@ import Footer from './components/Footer.jsx';
 import GlobalCursor from './components/GlobalCursor.jsx';
 import GlobalStarfield from './components/GlobalStarfield.jsx';
 import FloatingSystemNav from './components/FloatingSystemNav.jsx';
+import LanguageToggle from './components/LanguageToggle.jsx';
 
 export function App() {
   const heroSectionRef = useRef(null);
@@ -25,6 +26,7 @@ export function App() {
     <div className="site-shell">
       <GlobalStarfield />
       <GlobalCursor />
+      <LanguageToggle />
       {isDesktop ? <FloatingSystemNav heroRef={heroSectionRef} /> : null}
       <section id="hero" ref={heroSectionRef}>
         <Hero />

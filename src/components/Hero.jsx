@@ -1,4 +1,5 @@
 ﻿import { useEffect, useState } from 'react';
+import { useLanguage } from '../useLanguage.js';
 
 const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
 const BOOT_TEXT = '> system.status: booting';
@@ -9,6 +10,8 @@ const hasBootCompletedThisSession = () => {
 };
 
 export default function Hero() {
+  const { content } = useLanguage();
+  const heroContent = content.hero;
   const [typedCount, setTypedCount] = useState(0);
   const [dotCount, setDotCount] = useState(0);
   const [bootOnline, setBootOnline] = useState(false);
@@ -121,39 +124,39 @@ export default function Hero() {
       <div className="hero-layout">
         {showPanel ? (
           <div className={`hero-panel-shell ${panelExpanded ? 'is-expanded' : ''}`}>
-            <p className={`system-kicker hero-kicker hero-reveal-step hero-step-0 ${revealContent ? 'is-revealed' : ''}`}>&gt; system_boot</p>
+            <p className={`system-kicker hero-kicker hero-reveal-step hero-step-0 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.kicker}</p>
 
             <div className="hero-panel">
               <div className="hero-panel-grid" aria-hidden="true" />
 
               <div className="hero-body">
                 <div className="hero-left-column">
-                  <h1 className={`hero-title hero-reveal-step hero-step-1 ${revealContent ? 'is-revealed' : ''}`}>{'أهلاً وسهلاً'}</h1>
+                  <h1 className={`hero-title hero-reveal-step hero-step-1 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.title}</h1>
 
                   <p className={`hero-subtitle hero-reveal-step hero-step-2 ${revealContent ? 'is-revealed' : ''}`}>
-                    Greetings - for my non-Arab visitors.
+                    {heroContent.subtitle}
                   </p>
 
                   <div className="hero-identity">
-                    <p className={`hero-name hero-reveal-step hero-step-3 ${revealContent ? 'is-revealed' : ''}`}>Kinan Maarrawi</p>
-                    <p className={`hero-role hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>CS Student @ UoBD</p>
+                    <p className={`hero-name hero-reveal-step hero-step-3 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.name}</p>
+                    <p className={`hero-role hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.role}</p>
                   </div>
                 </div>
 
                 <div className={`hero-right-column hero-reveal-step hero-step-5 ${revealContent ? 'is-revealed' : ''}`}>
                   <a className="hero-btn hero-btn-stack" href="#about" onClick={scrollToSection('about')}>
-                    About
+                    {heroContent.buttons.about}
                   </a>
                   <a className="hero-btn hero-btn-stack" href="#projects" onClick={scrollToSection('projects')}>
-                    Projects
+                    {heroContent.buttons.projects}
                   </a>
                   <a className="hero-btn hero-btn-stack" href="#contact" onClick={scrollToSection('contact')}>
-                    Contact
+                    {heroContent.buttons.contact}
                   </a>
                 </div>
               </div>
 
-              <p className={`hero-system hero-reveal-step hero-step-6 ${revealContent ? 'is-revealed' : ''}`}>&gt; system.status: online</p>
+              <p className={`hero-system hero-reveal-step hero-step-6 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.systemStatus}</p>
             </div>
           </div>
         ) : null}
@@ -161,4 +164,3 @@ export default function Hero() {
     </section>
   );
 }
-

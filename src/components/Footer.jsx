@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useLanguage } from '../useLanguage.js';
 
 const EMAIL = 'kinan@maarrawi.com';
 
 export default function Footer() {
+  const { content } = useLanguage();
+  const footerContent = content.footer;
   const [copied, setCopied] = useState(false);
   const resetTimerRef = useRef(0);
 
@@ -25,42 +28,42 @@ export default function Footer() {
   };
 
   return (
-    <Section>
+    <Section dir="ltr">
       <Content>
         <Kicker className="system-kicker">
-          &gt; <KickerAccent>contact</KickerAccent>
+          &gt; <KickerAccent>{footerContent.kicker}</KickerAccent>
         </Kicker>
 
         <Lines>
           <ContactBlock>
-            <Label>email</Label>
+            <Label>{footerContent.email}</Label>
             <ValueRow>
               <Value href={`mailto:${EMAIL}`}>{EMAIL}</Value>
               <CopyButton type="button" onClick={copyEmail}>
-                copy
+                {footerContent.copy}
               </CopyButton>
-              <CopiedHint aria-live="polite">{copied ? 'copied.' : ''}</CopiedHint>
+              <CopiedHint aria-live="polite">{copied ? footerContent.copied : ''}</CopiedHint>
             </ValueRow>
           </ContactBlock>
 
           <ContactBlock>
-            <Label>linkedin</Label>
+            <Label>{footerContent.linkedin}</Label>
             <Value href="https://www.linkedin.com/in/kinan-maarrawi/" target="_blank" rel="noreferrer">
               https://www.linkedin.com/in/kinan-maarrawi/
             </Value>
           </ContactBlock>
 
           <ContactBlock>
-            <Label>github</Label>
+            <Label>{footerContent.github}</Label>
             <Value href="https://github.com/KinanMaarrawi" target="_blank" rel="noreferrer">
               https://github.com/KinanMaarrawi
             </Value>
           </ContactBlock>
 
           <ContactBlock>
-            <Label>cv</Label>
+            <Label>{footerContent.cv}</Label>
             <Value href="/CV.pdf" target="_blank" rel="noreferrer">
-              Download CV (PDF)
+              {footerContent.cvText}
             </Value>
           </ContactBlock>
         </Lines>
