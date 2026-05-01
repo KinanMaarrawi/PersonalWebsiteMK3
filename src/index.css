@@ -218,12 +218,22 @@ body {
 }
 
 [dir="rtl"] .hero-body {
-  grid-template-columns: minmax(0, 58%) minmax(150px, 32%);
+  grid-template-columns: minmax(0, 1fr) 170px;
   gap: clamp(1.4rem, 3vw, 2.4rem);
 }
 
 [dir="rtl"] .hero-title {
-  font-size: clamp(2.8rem, 8.4vw, 6.25rem);
+  max-width: 100%;
+  font-size: clamp(2.8rem, 6.4vw, 4.6rem);
+  overflow-wrap: normal;
+}
+
+[dir="rtl"] .hero-right-column {
+  width: 170px;
+}
+
+[dir="rtl"] .hero-btn-stack {
+  width: 100%;
 }
 
 [dir="rtl"] .hero-body,
@@ -545,6 +555,18 @@ li {
 
   .hero-system {
     text-align: left;
+  }
+
+  [dir="rtl"] .hero-body {
+    grid-template-columns: 1fr;
+  }
+
+  [dir="rtl"] .hero-right-column {
+    width: 100%;
+  }
+
+  [dir="rtl"] .hero-title {
+    font-size: clamp(2.35rem, 11vw, 3.2rem);
   }
 }
 
