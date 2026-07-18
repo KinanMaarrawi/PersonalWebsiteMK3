@@ -99,6 +99,13 @@ export const content = {
       stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
       items: [
         {
+          title: 'Säbener',
+          image: '/13.png',
+          github: 'https://github.com/KinanMaarrawi/Sabener',
+          description: 'Live FC Bayern dashboard — news, matchday and youth-academy deep cuts, with German headlines auto-translated.',
+          tech: 'React + Express'
+        },
+        {
           title: "Dorz 'Book a Ride'",
           image: '/8.png',
           github: 'https://github.com/KinanMaarrawi/DorzMVP',
@@ -218,6 +225,13 @@ export const content = {
       stackCommand: 'stack:',
       stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
       items: [
+        {
+          title: 'Säbener',
+          image: '/13.png',
+          github: 'https://github.com/KinanMaarrawi/Sabener',
+          description: 'لوحة متابعة مباشرة لبايرن ميونخ: أخبار، مباريات، وأخبار أكاديمية الشباب، مع ترجمة تلقائية للعناوين الألمانية.',
+          tech: 'React + Express'
+        },
         {
           title: "Dorz 'Book a Ride'",
           image: '/8.png',
