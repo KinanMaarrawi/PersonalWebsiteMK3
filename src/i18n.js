@@ -99,6 +99,13 @@ export const content = {
       stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
       items: [
         {
+          title: 'Jawab',
+          image: '/answer.png',
+          github: 'https://github.com/KinanMaarrawi/jawab',
+          description: 'AI-powered semantic search over the Quran that answers a question with a composed reading of related verses.',
+          tech: 'Python + React'
+        },
+        {
           title: 'Säbener',
           image: '/13.png',
           github: 'https://github.com/KinanMaarrawi/Sabener',
@@ -111,20 +118,6 @@ export const content = {
           github: 'https://github.com/KinanMaarrawi/DorzMVP',
           description: 'Ride-booking MVP built for my Internship @ DORZ.',
           tech: 'Kotlin'
-        },
-        {
-          title: 'PM_CLI',
-          image: '/7.png',
-          github: 'https://github.com/KinanMaarrawi/PM_CLI',
-          description: 'Terminal password manager built to learn C and encryption.',
-          tech: 'C'
-        },
-        {
-          title: 'GWTIT',
-          image: '/10.png',
-          github: 'https://github.com/KinanMaarrawi/GWTIT',
-          description: 'Flask-based API project that aggregates geographic data for a country in a simple web interface.',
-          tech: 'Flask'
         },
         {
           title: 'terra-tui',
@@ -226,6 +219,13 @@ export const content = {
       stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
       items: [
         {
+          title: 'Jawab',
+          image: '/answer.png',
+          github: 'https://github.com/KinanMaarrawi/jawab',
+          description: 'بحث دلالي في القرآن مدعوم بالذكاء الاصطناعي، يجيب عن سؤالك بقراءة مركّبة من آيات مترابطة.',
+          tech: 'Python + React'
+        },
+        {
           title: 'Säbener',
           image: '/13.png',
           github: 'https://github.com/KinanMaarrawi/Sabener',
@@ -238,20 +238,6 @@ export const content = {
           github: 'https://github.com/KinanMaarrawi/DorzMVP',
           description: 'نسخة MVP لحجز الرحلات، بنيتها خلال تدريبي في DORZ.',
           tech: 'Kotlin'
-        },
-        {
-          title: 'PM_CLI',
-          image: '/7.png',
-          github: 'https://github.com/KinanMaarrawi/PM_CLI',
-          description: 'مدير كلمات مرور في الطرفية، بنيته لتعلم C ومبادئ التشفير.',
-          tech: 'C'
-        },
-        {
-          title: 'GWTIT',
-          image: '/10.png',
-          github: 'https://github.com/KinanMaarrawi/GWTIT',
-          description: 'مشروع Flask يجمع بيانات جغرافية عن دولة ويعرضها بواجهة بسيطة.',
-          tech: 'Flask'
         },
         {
           title: 'terra-tui',
