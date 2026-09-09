@@ -1,2 +1,14 @@
 node_modules
+dist
 INSTRUCTIONS.md
+
+# Local environment (see .env.example)
+.env
+.env.local
+.env.*.local
+
+# Agent tooling: .mcp.json and skills-lock.json ARE committed so a clone gets the
+# same setup; the vendored skill content and machine-local settings are not.
+.claude/settings.local.json
+.claude/skills/
+.agents/

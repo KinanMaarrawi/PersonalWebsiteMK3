@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+
+Sitemap: https://kinan.maarrawi.com/sitemap.xml

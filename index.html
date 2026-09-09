@@ -1,18 +1,71 @@
 <!doctype html>
 <html lang="en">
   <head>
-      <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <link rel="shortcut icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-      <link rel="manifest" href="/site.webmanifest" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Kinan Maarrawi is a Computer Science student in Dubai. View portfolio, projects, and contact details." />
-    <title>Kinan Maarrawi</title>
+
+    <title>Kinan Maarrawi — Computer Science Student & Developer</title>
+    <meta
+      name="description"
+      content="Kinan Maarrawi is a Computer Science student in Dubai. View portfolio, projects, and contact details."
+    />
+    <link rel="canonical" href="https://kinan.maarrawi.com/" />
+    <meta name="author" content="Kinan Maarrawi" />
+    <meta name="theme-color" content="#0b0812" />
+
+    <!-- Link previews (LinkedIn, WhatsApp, Discord, Slack, iMessage). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kinan Maarrawi" />
+    <meta property="og:url" content="https://kinan.maarrawi.com/" />
+    <meta property="og:title" content="Kinan Maarrawi — Computer Science Student & Developer" />
+    <meta
+      property="og:description"
+      content="Computer Science student at the University of Birmingham Dubai. Projects, background, and contact details."
+    />
+    <meta property="og:image" content="https://kinan.maarrawi.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kinan Maarrawi — CS Student @ University of Birmingham Dubai" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_AE" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kinan Maarrawi — Computer Science Student & Developer" />
+    <meta
+      name="twitter:description"
+      content="Computer Science student at the University of Birmingham Dubai. Projects, background, and contact details."
+    />
+    <meta name="twitter:image" content="https://kinan.maarrawi.com/og-image.jpg" />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      /*
+       * Set lang/dir before first paint. LanguageProvider does this too, but only
+       * after React mounts, so without this an Arabic visitor gets a frame of
+       * left-to-right English layout. Mirrors getInitialLanguage() in
+       * src/LanguageContext.jsx — keep the storage key in sync with i18n.js.
+       */
+      (function () {
+        var lang;
+        try {
+          lang = localStorage.getItem('site_language_v1');
+        } catch (error) {
+          lang = null;
+        }
+        if (lang !== 'ar' && lang !== 'en') {
+          lang = (navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
+        }
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

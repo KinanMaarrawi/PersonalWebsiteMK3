@@ -3,11 +3,14 @@ import './index.css';
 import { StrictMode } from 'react';
 import { App } from './App.jsx';
 import { LanguageProvider } from './LanguageContext.jsx';
+import { SiteContentProvider } from './SiteContentContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <LanguageProvider>
-      <App />
+      <SiteContentProvider>
+        <App />
+      </SiteContentProvider>
     </LanguageProvider>
   </StrictMode>
 );

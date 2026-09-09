@@ -18,6 +18,7 @@ export const LANGUAGES = {
 
 export const content = {
   en: {
+    skipLink: 'Skip to content',
     nav: {
       ariaLabel: 'Section navigation',
       kicker: 'nav',
@@ -46,6 +47,7 @@ export const content = {
     },
     about: {
       kicker: '> profile_terminal',
+      tablistLabel: 'Profile sections',
       commands: [
         {
           id: 'whoami',
@@ -96,37 +98,7 @@ export const content = {
     projects: {
       kicker: '> top_projects',
       stackCommand: 'stack:',
-      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
-      items: [
-        {
-          title: 'Jawab',
-          image: '/answer.png',
-          github: 'https://github.com/KinanMaarrawi/jawab',
-          description: 'AI-powered semantic search over the Quran that answers a question with a composed reading of related verses.',
-          tech: 'Python + React'
-        },
-        {
-          title: 'Säbener',
-          image: '/13.png',
-          github: 'https://github.com/KinanMaarrawi/Sabener',
-          description: 'Live FC Bayern dashboard — news, matchday and youth-academy deep cuts, with German headlines auto-translated.',
-          tech: 'React + Express'
-        },
-        {
-          title: "Dorz 'Book a Ride'",
-          image: '/8.png',
-          github: 'https://github.com/KinanMaarrawi/DorzMVP',
-          description: 'Ride-booking MVP built for my Internship @ DORZ.',
-          tech: 'Kotlin'
-        },
-        {
-          title: 'terra-tui',
-          image: '/11.png',
-          github: 'https://github.com/KinanMaarrawi/terra-tui',
-          description: 'A procedural terrain explorer and TUI sandbox, built in Haskell.',
-          tech: 'Haskell'
-        }
-      ]
+      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS']
     },
     footer: {
       kicker: 'contact',
@@ -140,6 +112,7 @@ export const content = {
     }
   },
   ar: {
+    skipLink: 'تخطَّ إلى المحتوى',
     nav: {
       ariaLabel: 'التنقل بين أقسام الصفحة',
       kicker: 'nav',
@@ -168,6 +141,7 @@ export const content = {
     },
     about: {
       kicker: '> profile_terminal',
+      tablistLabel: 'أقسام الملف الشخصي',
       commands: [
         {
           id: 'whoami',
@@ -216,37 +190,7 @@ export const content = {
     projects: {
       kicker: '> top_projects',
       stackCommand: 'stack:',
-      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS'],
-      items: [
-        {
-          title: 'Jawab',
-          image: '/answer.png',
-          github: 'https://github.com/KinanMaarrawi/jawab',
-          description: 'بحث دلالي في القرآن مدعوم بالذكاء الاصطناعي، يجيب عن سؤالك بقراءة مركّبة من آيات مترابطة.',
-          tech: 'Python + React'
-        },
-        {
-          title: 'Säbener',
-          image: '/13.png',
-          github: 'https://github.com/KinanMaarrawi/Sabener',
-          description: 'لوحة متابعة مباشرة لبايرن ميونخ: أخبار، مباريات، وأخبار أكاديمية الشباب، مع ترجمة تلقائية للعناوين الألمانية.',
-          tech: 'React + Express'
-        },
-        {
-          title: "Dorz 'Book a Ride'",
-          image: '/8.png',
-          github: 'https://github.com/KinanMaarrawi/DorzMVP',
-          description: 'نسخة MVP لحجز الرحلات، بنيتها خلال تدريبي في DORZ.',
-          tech: 'Kotlin'
-        },
-        {
-          title: 'terra-tui',
-          image: '/11.png',
-          github: 'https://github.com/KinanMaarrawi/terra-tui',
-          description: 'مستكشف تضاريس إجرائي وبيئة TUI للتجربة، مبني بلغة Haskell.',
-          tech: 'Haskell'
-        }
-      ]
+      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS']
     },
     footer: {
       kicker: 'contact',

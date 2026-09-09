@@ -1,7 +1,10 @@
 {
-  "name": "package",
+  "name": "kinan-portfolio",
+  "version": "3.0.0",
   "private": true,
-  "version": "0.0.0",
+  "description": "Personal portfolio site for Kinan Maarrawi — React + Vite frontend with a Supabase content backend.",
+  "author": "Kinan Maarrawi",
+  "homepage": "https://kinan.maarrawi.com",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,47 +13,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ebay/nice-modal-react": "^1.2.13",
-    "@fortawesome/fontawesome-svg-core": "^7.1.0",
-    "@fortawesome/free-brands-svg-icons": "^7.1.0",
-    "@fortawesome/free-regular-svg-icons": "^7.1.0",
-    "@fortawesome/free-solid-svg-icons": "^7.1.0",
-    "@fortawesome/react-fontawesome": "^3.1.0",
-    "@gsap/react": "^2.1.2",
-    "@react-three/drei": "^10.7.6",
-    "@react-three/fiber": "^9.3.0",
-    "@tailwindcss/vite": "^4.1.13",
-    "@use-gesture/react": "^10.3.1",
-    "antd": "^5.27.4",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.23.22",
-    "gsap": "^3.13.0",
-    "keen-slider": "^6.8.6",
-    "lucide-react": "^0.544.0",
-    "motion": "^12.23.22",
-    "next": "^15.5.4",
-    "nodemailer": "^7.0.6",
-    "ogl": "^1.0.11",
+    "@supabase/supabase-js": "^2.116.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "styled-components": "^6.1.19",
-    "tailwind-merge": "^3.3.1",
-    "three": "^0.180.0"
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.3",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.36.0",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.13",
-    "tw-animate-css": "^1.4.0",
     "vite": "^7.1.7"
   }
 }

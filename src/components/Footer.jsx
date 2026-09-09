@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useLanguage } from '../useLanguage.js';
-
-const EMAIL = 'kinan@maarrawi.com';
+import { useSiteContent } from '../useSiteContent.js';
 
 export default function Footer() {
   const { content } = useLanguage();
+  const { settings } = useSiteContent();
   const footerContent = content.footer;
   const [copied, setCopied] = useState(false);
   const resetTimerRef = useRef(0);
@@ -18,7 +18,7 @@ export default function Footer() {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(settings.email);
       setCopied(true);
       window.clearTimeout(resetTimerRef.current);
       resetTimerRef.current = window.setTimeout(() => setCopied(false), 1400);
@@ -38,7 +38,7 @@ export default function Footer() {
           <ContactBlock>
             <Label>{footerContent.email}</Label>
             <ValueRow>
-              <Value href={`mailto:${EMAIL}`}>{EMAIL}</Value>
+              <Value href={`mailto:${settings.email}`}>{settings.email}</Value>
               <CopyButton type="button" onClick={copyEmail}>
                 {footerContent.copy}
               </CopyButton>
@@ -48,21 +48,21 @@ export default function Footer() {
 
           <ContactBlock>
             <Label>{footerContent.linkedin}</Label>
-            <Value href="https://www.linkedin.com/in/kinan-maarrawi/" target="_blank" rel="noreferrer">
-              https://www.linkedin.com/in/kinan-maarrawi/
+            <Value href={settings.linkedin_url} target="_blank" rel="noreferrer">
+              {settings.linkedin_url}
             </Value>
           </ContactBlock>
 
           <ContactBlock>
             <Label>{footerContent.github}</Label>
-            <Value href="https://github.com/KinanMaarrawi" target="_blank" rel="noreferrer">
-              https://github.com/KinanMaarrawi
+            <Value href={settings.github_url} target="_blank" rel="noreferrer">
+              {settings.github_url}
             </Value>
           </ContactBlock>
 
           <ContactBlock>
             <Label>{footerContent.cv}</Label>
-            <Value href="/CV.pdf" target="_blank" rel="noreferrer">
+            <Value href={settings.cv_url} target="_blank" rel="noreferrer">
               {footerContent.cvText}
             </Value>
           </ContactBlock>

@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Pretty URL for the admin entry point. Netlify serves static files before applying
+# redirect rules, so this only ever matches the bare /admin path.
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

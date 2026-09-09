@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
 
 const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
@@ -109,7 +109,7 @@ export default function Hero() {
   const bootingLine = `${BOOT_TEXT.slice(0, typedCount)}${typedCount >= BOOT_TEXT.length ? '.'.repeat(dotCount) : ''}`;
 
   return (
-    <section className={`hero-shell min-h-screen ${showPanel ? 'hero-has-panel' : 'hero-boot-mode'}`}>
+    <section className={`hero-shell ${showPanel ? 'hero-has-panel' : 'hero-boot-mode'}`}>
       <div className="hero-glow" aria-hidden="true" />
 
       {!showPanel ? (

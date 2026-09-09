@@ -7,6 +7,7 @@ import GlobalCursor from './components/GlobalCursor.jsx';
 import GlobalStarfield from './components/GlobalStarfield.jsx';
 import FloatingSystemNav from './components/FloatingSystemNav.jsx';
 import LanguageToggle from './components/LanguageToggle.jsx';
+import { useLanguage } from './useLanguage.js';
 
 export function App() {
   const heroSectionRef = useRef(null);
@@ -22,24 +23,31 @@ export function App() {
     return () => mediaQuery.removeEventListener('change', updateMatch);
   }, []);
 
+  const { content } = useLanguage();
+
   return (
     <div className="site-shell">
+      <a className="skip-link" href="#about">
+        {content.skipLink}
+      </a>
       <GlobalStarfield />
       <GlobalCursor />
       <LanguageToggle />
       {isDesktop ? <FloatingSystemNav heroRef={heroSectionRef} /> : null}
-      <section id="hero" ref={heroSectionRef}>
-        <Hero />
-      </section>
-      <section id="about">
-        <About />
-      </section>
-      <section id="projects">
-        <Projects />
-      </section>
-      <section id="contact">
+      <main>
+        <section id="hero" ref={heroSectionRef}>
+          <Hero />
+        </section>
+        <section id="about">
+          <About />
+        </section>
+        <section id="projects">
+          <Projects />
+        </section>
+      </main>
+      <footer id="contact">
         <Footer />
-      </section>
+      </footer>
     </div>
   );
 }

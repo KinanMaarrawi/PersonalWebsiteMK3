@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useLanguage } from '../useLanguage.js';
+import { useSiteContent } from '../useSiteContent.js';
+import { ProjectCard } from './ProjectCard.jsx';
 
 export default function Projects() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
+  const { projects } = useSiteContent();
   const projectsContent = content.projects;
   const stackRef = useRef(null);
   const [stackVisible, setStackVisible] = useState(false);
@@ -36,15 +39,8 @@ export default function Projects() {
         </StackOutput>
 
         <CardsGrid>
-          {projectsContent.items.map(project => (
-            <Card key={project.title} onClick={() => window.open(project.github, '_blank', 'noopener,noreferrer')}>
-              <CardImage src={project.image} alt={project.title} />
-              <CardBody>
-                <CardTitle>{project.title}</CardTitle>
-                <CardDescription>{project.description}</CardDescription>
-                <CardTech>{project.tech}</CardTech>
-              </CardBody>
-            </Card>
+          {projects.map(project => (
+            <ProjectCard key={project.id} project={project} language={language} />
           ))}
         </CardsGrid>
       </Content>
@@ -130,112 +126,4 @@ const CardsGrid = styled.div`
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-`;
-
-const Card = styled.article`
-  position: relative;
-  background: rgba(18, 14, 27, 0.92);
-  border: 1px solid rgba(126, 62, 190, 0.35);
-  border-radius: 0.72rem;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 280px;
-  flex: 1 1 320px;
-  max-width: 352px;
-  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1), border-color 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: rgba(157, 110, 214, 0.65);
-  }
-
-  @media (max-width: 768px) {
-    flex: 1 1 100%;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    min-height: 110px;
-    height: auto;
-    flex-direction: row;
-    align-items: stretch;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-`;
-
-const CardImage = styled.img`
-  width: 100%;
-  height: 196px;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(126, 62, 190, 0.25);
-
-  @media (max-width: 768px) {
-    width: 70px;
-    min-width: 70px;
-    height: 100%;
-    border-bottom: none;
-    border-right: 1px solid rgba(126, 62, 190, 0.25);
-  }
-`;
-
-const CardBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.2rem;
-  padding: 0.95rem 1rem 1.05rem;
-  min-width: 0;
-  width: 100%;
-  overflow: hidden;
-
-  @media (max-width: 768px) {
-    padding: 0.66rem 0.72rem;
-  }
-`;
-
-const CardTitle = styled.h3`
-  margin: 0;
-  color: #f3efe9;
-  font-size: 1.28rem;
-  letter-spacing: 0.01em;
-  font-weight: 650;
-  line-height: 1.2;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-`;
-
-const CardDescription = styled.p`
-  display: none;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    display: block;
-    font-size: 0.82rem;
-    line-height: 1.35;
-    color: rgba(241, 236, 247, 0.82);
-    overflow: visible;
-    white-space: normal;
-    word-break: break-word;
-  }
-`;
-
-const CardTech = styled.p`
-  display: none;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    display: block;
-    font-size: 0.74rem;
-    line-height: 1.25;
-    color: rgba(197, 174, 226, 0.72);
-    overflow: hidden;
-    word-break: break-word;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
 `;
