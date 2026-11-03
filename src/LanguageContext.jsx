@@ -1,11 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { DEFAULT_LANGUAGE, LANGUAGES, LANGUAGE_STORAGE_KEY, content } from './i18n.js';
 import { LanguageContext } from './languageStore.js';
+import { runLanguageWipe } from './languageWipe.js';
 
 function getInitialLanguage() {
   if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
 
-  const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  let storedLanguage = null;
+  try {
+    storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  } catch {
+    // Storage blocked: fall through to the browser language.
+  }
   if (storedLanguage && LANGUAGES[storedLanguage]) return storedLanguage;
 
   const browserLanguage = window.navigator.language?.toLowerCase() || '';
@@ -20,8 +27,24 @@ export function LanguageProvider({ children }) {
     const root = document.documentElement;
     root.lang = language;
     root.dir = languageMeta.dir;
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    try {
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+    } catch {
+      // Private mode: the choice still applies for this visit.
+    }
   }, [language, languageMeta.dir]);
+
+  const toggleLanguage = useCallback(() => {
+    const next = language === 'ar' ? 'en' : 'ar';
+    const nextDir = LANGUAGES[next].dir;
+    runLanguageWipe(nextDir, () => {
+      // The wipe snapshots the page after this returns, so the new language (and
+      // its direction) must be in the DOM synchronously.
+      flushSync(() => setLanguage(next));
+      document.documentElement.lang = next;
+      document.documentElement.dir = nextDir;
+    });
+  }, [language]);
 
   const value = useMemo(
     () => ({
@@ -30,9 +53,9 @@ export function LanguageProvider({ children }) {
       language,
       languageMeta,
       setLanguage,
-      toggleLanguage: () => setLanguage(current => (current === 'ar' ? 'en' : 'ar'))
+      toggleLanguage
     }),
-    [language, languageMeta]
+    [language, languageMeta, toggleLanguage]
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
 import { useSiteContent } from '../useSiteContent.js';
 import { resolveAssetUrl } from '../lib/supabase.js';
+import { useFx } from '../preferences.js';
 
 function preloadImage(src) {
   if (typeof window === 'undefined') return Promise.resolve();
@@ -40,6 +41,7 @@ export default function About() {
 
 function AboutTerminal({ rows, content: aboutContent, direction, language }) {
   const commands = useMemo(() => toCommands(rows, language), [rows, language]);
+  const fxOn = useFx();
   const tabRefs = useRef([]);
   const [activeCommandId, setActiveCommandId] = useState(commands[0].id);
   const [typedOutput, setTypedOutput] = useState('');
@@ -92,6 +94,10 @@ function AboutTerminal({ rows, content: aboutContent, direction, language }) {
 
     typingVersionRef.current += 1;
     const version = typingVersionRef.current;
+    if (!fxOn) {
+      setTypedOutput(fullText);
+      return undefined;
+    }
     setTypedOutput('');
 
     let index = 0;
@@ -109,7 +115,7 @@ function AboutTerminal({ rows, content: aboutContent, direction, language }) {
     return () => {
       window.clearTimeout(typingTimerRef.current);
     };
-  }, [activeCommand]);
+  }, [activeCommand, fxOn]);
 
   useEffect(() => {
     if (imageCurrentId === activeCommandId) return undefined;

@@ -32,6 +32,10 @@ export const content = {
     languageToggle: {
       ariaLabel: 'Switch language'
     },
+    fxToggle: {
+      ariaLabel: 'Animations and custom cursor',
+      title: 'Turn animations and the custom cursor on or off'
+    },
     hero: {
       kicker: '> system_boot',
       title: 'أهلاً وسهلاً',
@@ -50,7 +54,15 @@ export const content = {
     },
     projects: {
       kicker: '> top_projects',
-      stackCommand: 'stack:'
+      stackCommand: 'stack:',
+      open: 'Open details for',
+      dialog: {
+        close: 'esc',
+        closeLabel: 'Close',
+        source: 'source',
+        live: 'live',
+        highlights: 'highlights'
+      }
     },
     footer: {
       kicker: 'contact',
@@ -78,6 +90,10 @@ export const content = {
     languageToggle: {
       ariaLabel: 'تبديل اللغة'
     },
+    fxToggle: {
+      ariaLabel: 'الحركات والمؤشر الخاص',
+      title: 'شغّل أو طفّي الحركات والمؤشر الخاص'
+    },
     hero: {
       kicker: '> system_boot',
       title: 'Welcome',
@@ -96,7 +112,15 @@ export const content = {
     },
     projects: {
       kicker: '> top_projects',
-      stackCommand: 'stack:'
+      stackCommand: 'stack:',
+      open: 'تفاصيل',
+      dialog: {
+        close: 'esc',
+        closeLabel: 'إغلاق',
+        source: 'الكود',
+        live: 'جرّبه',
+        highlights: 'أبرز النقاط'
+      }
     },
     footer: {
       kicker: 'contact',

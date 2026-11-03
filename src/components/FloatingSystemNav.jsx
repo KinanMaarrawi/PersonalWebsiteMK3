@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
 
-const NAV_ITEMS = [
-  { id: 'hero', label: 'hero' },
-  { id: 'about', label: 'about' },
-  { id: 'projects', label: 'projects' },
-  { id: 'contact', label: 'contact' }
-];
+/** Section ids in page order; labels come from i18n (nav.items). */
+const NAV_ITEMS = ['hero', 'about', 'projects', 'contact'].map(id => ({ id }));
 
 export default function FloatingSystemNav({ heroRef }) {
   const { content } = useLanguage();
@@ -90,7 +86,7 @@ export default function FloatingSystemNav({ heroRef }) {
             className={`floating-system-nav-link ${activeSectionId === item.id ? 'is-active' : ''}`}
             aria-current={activeSectionId === item.id ? 'true' : undefined}
           >
-            {navContent.items[item.id] || item.label}
+            {navContent.items[item.id]}
           </a>
         ))}
       </div>

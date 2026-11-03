@@ -50,7 +50,8 @@
        * Set lang/dir before first paint. LanguageProvider does this too, but only
        * after React mounts, so without this an Arabic visitor gets a frame of
        * left-to-right English layout. Mirrors getInitialLanguage() in
-       * src/LanguageContext.jsx — keep the storage key in sync with i18n.js.
+       * src/LanguageContext.jsx — keep the storage keys in sync with i18n.js and
+       * src/preferences.js.
        */
       (function () {
         var lang;
@@ -64,6 +65,19 @@
         }
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        // Effects preference (src/preferences.js). Defaults to off for visitors who
+        // ask their OS for reduced motion; an explicit choice on the site wins.
+        var fx;
+        try {
+          fx = localStorage.getItem('site_fx_v1');
+        } catch (error) {
+          fx = null;
+        }
+        if (fx !== 'on' && fx !== 'off') {
+          fx = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
+        }
+        document.documentElement.dataset.fx = fx;
       })();
     </script>
     <script type="module" src="/src/main.jsx"></script>

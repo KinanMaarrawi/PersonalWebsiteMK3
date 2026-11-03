@@ -53,11 +53,10 @@ body {
 }
 
 .site-starfield-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 0;
 }
@@ -162,11 +161,19 @@ body {
   box-shadow: 0 0 12px rgba(157, 110, 214, 0.55);
 }
 
-.language-toggle {
+/* Language and fx toggles share one fixed cluster in the top corner. */
+.site-controls {
   position: fixed;
   top: 1rem;
   right: 1rem;
   z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.language-toggle,
+.site-control {
   display: inline-flex;
   align-items: center;
   gap: 0.44rem;
@@ -184,7 +191,8 @@ body {
   transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
 }
 
-.language-toggle:hover {
+.language-toggle:hover,
+.site-control:hover {
   border-color: rgba(157, 110, 214, 0.72);
   background: rgba(20, 15, 30, 0.82);
   color: rgba(243, 239, 249, 0.98);
@@ -202,6 +210,19 @@ body {
 
 .language-toggle-next {
   white-space: nowrap;
+}
+
+.site-control-key {
+  color: rgba(197, 174, 226, 0.84);
+}
+
+.fx-state {
+  min-width: 1.7em;
+  color: rgba(187, 179, 199, 0.7);
+}
+
+.fx-state.is-on {
+  color: rgba(157, 110, 214, 0.96);
 }
 
 [dir="rtl"] .hero-panel,
@@ -567,29 +588,32 @@ li {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  /*
-   * The site animates in several places: the hero boot sequence, the about
-   * typing effect and image crossfade, card hover lifts, the floating nav, and
-   * the cursor follower. Honour the preference across all of them rather than
-   * only the hero.
-   */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/*
+ * fx off. The site animates in several places: the hero boot sequence, the about
+ * typing effect and image crossfade, card hover lifts, the floating nav, popups, the
+ * language wipe and the cursor follower. One switch covers all of them. It defaults
+ * to off under prefers-reduced-motion (see the inline script in index.html), so the
+ * OS setting is honoured without overriding an explicit choice on the site.
+ */
+html[data-fx="off"] *,
+html[data-fx="off"] *::before,
+html[data-fx="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
 
-  .hero-glow {
-    animation: none;
-  }
+html[data-fx="off"] {
+  scroll-behavior: auto;
+}
 
-  .app-cursor {
-    display: none;
-  }
+html[data-fx="off"] .hero-glow {
+  animation: none;
+}
+
+html[data-fx="off"] .app-cursor {
+  display: none;
 }
 
 .about-terminal-shell {
@@ -851,14 +875,14 @@ li {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html,
-  body,
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  [role="button"] {
+  html:not([data-fx="off"]),
+  html:not([data-fx="off"]) body,
+  html:not([data-fx="off"]) a,
+  html:not([data-fx="off"]) button,
+  html:not([data-fx="off"]) input,
+  html:not([data-fx="off"]) textarea,
+  html:not([data-fx="off"]) select,
+  html:not([data-fx="off"]) [role="button"] {
     cursor: none !important;
   }
 }
@@ -896,6 +920,7 @@ li {
 .about-terminal-command:focus-visible,
 .about-terminal-output:focus-visible,
 .language-toggle:focus-visible,
+.site-control:focus-visible,
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid rgba(157, 110, 214, 0.9);
@@ -938,4 +963,203 @@ button:focus-visible {
   font-size: clamp(0.88rem, 1.6vw, 1rem);
   line-height: 1.5;
   color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * Language wipe (src/languageWipe.js)
+ * ------------------------------------------------------------------------ */
+
+/* Only the wipe uses view transitions; everything else keeps its own motion. */
+html[data-wipe]::view-transition-old(root),
+html[data-wipe]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-wipe="ltr"]::view-transition-new(root) {
+  animation: language-wipe-ltr 480ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+html[data-wipe="rtl"]::view-transition-new(root) {
+  animation: language-wipe-rtl 480ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+html[data-wipe]::view-transition-group(language-wipe) {
+  animation-duration: 480ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes language-wipe-ltr {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes language-wipe-rtl {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.language-wipe-line {
+  position: fixed;
+  top: 0;
+  width: 42px;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2147483646;
+  view-transition-name: language-wipe;
+}
+
+/* The bright 1px edge leads; a faint band trails behind it. */
+.language-wipe-line.is-ltr {
+  background: linear-gradient(to left, rgba(176, 132, 232, 0.95) 0 1px, rgba(126, 62, 190, 0.22) 1px, transparent 100%);
+}
+
+.language-wipe-line.is-rtl {
+  background: linear-gradient(to right, rgba(176, 132, 232, 0.95) 0 1px, rgba(126, 62, 190, 0.22) 1px, transparent 100%);
+}
+
+/* ---------------------------------------------------------------------------
+ * Project popup (src/components/ProjectDialog.jsx)
+ * ------------------------------------------------------------------------ */
+
+html:has(.project-dialog[open]) {
+  overflow: hidden;
+}
+
+.project-dialog {
+  width: min(760px, calc(100vw - 2rem));
+  max-width: none;
+  max-height: calc(100dvh - 3rem);
+  margin: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+}
+
+.project-dialog::backdrop {
+  background: rgba(6, 4, 10, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.project-dialog-panel {
+  position: relative;
+  max-height: calc(100dvh - 3rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(126, 62, 190, 0.45);
+  border-radius: 0.72rem;
+  background: rgb(18, 14, 27);
+  box-shadow: 0 24px 80px rgba(3, 2, 6, 0.6);
+}
+
+.project-dialog-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 1;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(126, 62, 190, 0.45);
+  border-radius: 0.4rem;
+  background: rgba(14, 11, 22, 0.86);
+  color: rgba(241, 236, 247, 0.88);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+[dir="rtl"] .project-dialog-close {
+  right: auto;
+  left: 0.7rem;
+}
+
+.project-dialog-close:hover {
+  border-color: rgba(157, 110, 214, 0.75);
+}
+
+/* Entrance when the card morph is unavailable (no View Transitions). */
+.project-dialog[open] .project-dialog-panel {
+  animation: project-dialog-in 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.project-dialog[open]::backdrop {
+  animation: project-backdrop-in 240ms ease;
+}
+
+html[data-project-morph] .project-dialog[open] .project-dialog-panel,
+html[data-project-morph] .project-dialog[open]::backdrop {
+  animation: none;
+}
+
+@keyframes project-dialog-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+}
+
+@keyframes project-backdrop-in {
+  from { opacity: 0; }
+}
+
+/* Card ⇄ popup morph: ease out, no overshoot. */
+html[data-project-morph]::view-transition-group(project-morph) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* An opaque box while the contents swap, so nothing behind shows through. */
+  background: rgb(18, 14, 27);
+  border-radius: 0.72rem;
+  overflow: hidden;
+}
+
+/*
+ * The box morphs; its contents swap quickly near the start rather than crossfading
+ * across the whole move, which would show a stretched ghost of the card.
+ */
+html[data-project-morph]::view-transition-old(project-morph),
+html[data-project-morph]::view-transition-new(project-morph) {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  mix-blend-mode: normal;
+}
+
+html[data-project-morph]::view-transition-old(project-morph) {
+  animation: project-morph-out 110ms ease-out both;
+}
+
+html[data-project-morph]::view-transition-new(project-morph) {
+  animation: project-morph-in 180ms 40ms ease-out both;
+}
+
+@keyframes project-morph-out {
+  to { opacity: 0; }
+}
+
+@keyframes project-morph-in {
+  from { opacity: 0; }
+}
+
+html[data-project-morph]::view-transition-old(root),
+html[data-project-morph]::view-transition-new(root) {
+  animation-duration: 320ms;
+}
+
+/* Phones: a full-height sheet that slides up. */
+@media (max-width: 768px) {
+  .project-dialog {
+    width: 100vw;
+    max-height: 100dvh;
+    height: 100dvh;
+    margin: 0;
+  }
+
+  .project-dialog-panel {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border-width: 0;
+  }
+
+  @keyframes project-dialog-in {
+    from { transform: translateY(24px); opacity: 0; }
+  }
 }

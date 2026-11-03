@@ -7,6 +7,7 @@ import GlobalCursor from './components/GlobalCursor.jsx';
 import GlobalStarfield from './components/GlobalStarfield.jsx';
 import FloatingSystemNav from './components/FloatingSystemNav.jsx';
 import LanguageToggle from './components/LanguageToggle.jsx';
+import FxToggle from './components/FxToggle.jsx';
 import { useLanguage } from './useLanguage.js';
 
 export function App() {
@@ -32,7 +33,10 @@ export function App() {
       </a>
       <GlobalStarfield />
       <GlobalCursor />
-      <LanguageToggle />
+      <div className="site-controls" dir="ltr">
+        <FxToggle />
+        <LanguageToggle />
+      </div>
       {isDesktop ? <FloatingSystemNav heroRef={heroSectionRef} /> : null}
       <main>
         <section id="hero" ref={heroSectionRef}>

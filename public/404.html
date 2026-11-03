@@ -8,31 +8,56 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <title>404 — Kinan Maarrawi</title>
+    <script>
+      /*
+       * Language and fx before first paint, using the same storage keys as the main
+       * site (src/i18n.js, src/preferences.js) so a choice made in either place
+       * carries over. Storage is read defensively: it can throw in private mode.
+       */
+      (function () {
+        function read(key) {
+          try { return localStorage.getItem(key); } catch (error) { return null; }
+        }
+        var lang = read('site_language_v1');
+        if (lang !== 'ar' && lang !== 'en') {
+          lang = (navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
+        }
+        var fx = read('site_fx_v1');
+        if (fx !== 'on' && fx !== 'off') {
+          fx = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
+        }
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.dataset.fx = fx;
+      })();
+    </script>
     <style>
       /*
-       * Deliberately a single static file with no JS framework and no build step.
+       * Deliberately a single static file with no framework and no build step.
        * An error page has to work when everything else has not.
        */
       * { box-sizing: border-box; }
+
+      html { background: #0b0812; }
 
       body {
         margin: 0;
         min-height: 100vh;
         display: grid;
         place-items: center;
-        padding: 2rem 1.25rem;
-        background: #0b0812;
+        padding: 4.5rem 1.25rem 2rem;
         color: #f1ecf7;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           'Liberation Mono', 'Courier New', monospace;
         -webkit-font-smoothing: antialiased;
       }
 
-      .glow {
+      .stars {
         position: fixed;
         inset: 0;
+        width: 100vw;
+        height: 100vh;
         pointer-events: none;
-        background: radial-gradient(circle at 50% 38%, rgba(126, 62, 190, 0.22), transparent 62%);
       }
 
       main {
@@ -74,7 +99,7 @@
         margin-top: 1.6rem;
       }
 
-      a {
+      .links a {
         display: inline-block;
         padding: 0.55rem 1rem;
         border: 1px solid rgba(126, 62, 190, 0.5);
@@ -85,14 +110,50 @@
         transition: background 160ms ease, border-color 160ms ease;
       }
 
-      a:hover { background: rgba(126, 62, 190, 0.24); border-color: rgba(157, 110, 214, 0.75); }
-      a:focus-visible { outline: 2px solid rgba(157, 110, 214, 0.9); outline-offset: 2px; }
+      .links a:hover { background: rgba(126, 62, 190, 0.24); border-color: rgba(157, 110, 214, 0.75); }
+      .links a.quiet { border-color: transparent; color: rgba(197, 174, 226, 0.84); }
+      .links a.quiet:hover { border-color: rgba(126, 62, 190, 0.5); background: transparent; }
+
+      /* Same cluster as the main site's .site-controls. */
+      .controls {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 2;
+        display: flex;
+        gap: 0.45rem;
+      }
+
+      .controls button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.44rem;
+        min-height: 2.5rem;
+        padding: 0.54rem 0.72rem;
+        border: 1px solid rgba(126, 62, 190, 0.38);
+        border-radius: 999px;
+        background: rgba(14, 11, 22, 0.72);
+        color: rgba(241, 236, 247, 0.9);
+        font: inherit;
+        font-size: 0.82rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: border-color 160ms ease, background-color 160ms ease;
+      }
+
+      .controls button:hover { border-color: rgba(157, 110, 214, 0.72); background: rgba(20, 15, 30, 0.82); }
+      .controls .key { color: rgba(157, 110, 214, 0.96); }
+      .controls .off { color: rgba(187, 179, 199, 0.7); }
+      .controls .divider { width: 1px; height: 0.92rem; background: rgba(157, 110, 214, 0.36); }
+
+      a:focus-visible,
+      button:focus-visible { outline: 2px solid rgba(157, 110, 214, 0.9); outline-offset: 2px; }
 
       .cursor {
         display: inline-block;
         width: 0.55em;
         height: 1.05em;
-        margin-left: 0.15em;
+        margin-inline-start: 0.15em;
         vertical-align: text-bottom;
         background: rgba(197, 174, 226, 0.84);
         animation: blink 1.1s step-end infinite;
@@ -100,43 +161,186 @@
 
       @keyframes blink { 50% { opacity: 0; } }
 
-      @media (prefers-reduced-motion: reduce) {
-        .cursor { animation: none; }
-      }
+      html[data-fx="off"] .cursor { animation: none; }
+      html[data-fx="off"] * { transition: none !important; }
     </style>
   </head>
   <body>
-    <div class="glow" aria-hidden="true"></div>
+    <canvas class="stars" aria-hidden="true"></canvas>
+
+    <div class="controls" dir="ltr">
+      <button type="button" id="fx-toggle" aria-pressed="true">
+        <span class="key">fx</span><span class="divider" aria-hidden="true"></span><span id="fx-state">on</span>
+      </button>
+      <button type="button" id="lang-toggle">
+        <span class="key" id="lang-current">EN</span><span class="divider" aria-hidden="true"></span><span id="lang-next">العربية</span>
+      </button>
+    </div>
+
     <main>
-      <p class="kicker">&gt; system.error</p>
+      <p class="kicker"><bdi>&gt; system.error</bdi></p>
       <h1>404</h1>
-      <p id="line-1">That path does not resolve.</p>
-      <p id="line-2">The page you were looking for is not here.<span class="cursor" aria-hidden="true"></span></p>
+      <p id="line-1"></p>
+      <p><span id="line-2"></span><span class="cursor" aria-hidden="true"></span></p>
       <div class="links">
-        <a href="/" id="home-link">Return home</a>
+        <a href="/" id="home-link"></a>
+        <a href="/#projects" class="quiet" id="projects-link"></a>
       </div>
     </main>
 
     <script>
-      // Match the language the visitor last chose on the site. Read defensively:
-      // storage can throw in private mode, and the page must still render.
       (function () {
-        var lang;
-        try {
-          lang = localStorage.getItem('site_language_v1');
-        } catch (error) {
-          lang = null;
-        }
-        if (!lang) {
-          lang = (navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
-        }
-        if (lang !== 'ar') return;
+        var root = document.documentElement;
+        var TEXT = {
+          en: {
+            line1: 'That path does not resolve.',
+            line2: 'The page you were looking for is not here.',
+            home: '> return home',
+            projects: '> projects',
+            current: 'EN',
+            next: 'العربية',
+            langLabel: 'Switch language',
+            fxLabel: 'Animations'
+          },
+          ar: {
+            line1: 'هذا المسار غير موجود.',
+            line2: 'الصفحة اللي بتدور عليها مو هون.',
+            home: 'العودة للرئيسية',
+            projects: 'شوف المشاريع',
+            current: 'ع',
+            next: 'English',
+            langLabel: 'تبديل اللغة',
+            fxLabel: 'الحركات'
+          }
+        };
 
-        document.documentElement.lang = 'ar';
-        document.documentElement.dir = 'rtl';
-        document.getElementById('line-1').textContent = 'هذا المسار غير موجود.';
-        document.getElementById('line-2').firstChild.textContent = 'الصفحة اللي بتدور عليها مو هون.';
-        document.getElementById('home-link').textContent = 'العودة للرئيسية';
+        function save(key, value) {
+          try { localStorage.setItem(key, value); } catch (error) { /* private mode */ }
+        }
+
+        function byId(id) { return document.getElementById(id); }
+
+        function applyLanguage(lang) {
+          var t = TEXT[lang];
+          root.lang = lang;
+          root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+          byId('line-1').textContent = t.line1;
+          byId('line-2').textContent = t.line2;
+          byId('home-link').textContent = t.home;
+          byId('projects-link').textContent = t.projects;
+          byId('lang-current').textContent = t.current;
+          byId('lang-next').textContent = t.next;
+          byId('lang-toggle').setAttribute('aria-label', t.langLabel);
+          byId('fx-toggle').setAttribute('aria-label', t.fxLabel);
+        }
+
+        function applyFx(on) {
+          root.dataset.fx = on ? 'on' : 'off';
+          byId('fx-state').textContent = on ? 'on' : 'off';
+          byId('fx-state').className = on ? 'key' : 'off';
+          byId('fx-toggle').setAttribute('aria-pressed', String(on));
+          if (stars) stars.refresh();
+        }
+
+        byId('lang-toggle').addEventListener('click', function () {
+          var next = root.lang === 'ar' ? 'en' : 'ar';
+          save('site_language_v1', next);
+          applyLanguage(next);
+        });
+
+        byId('fx-toggle').addEventListener('click', function () {
+          var on = root.dataset.fx === 'off';
+          save('site_fx_v1', on ? 'on' : 'off');
+          applyFx(on);
+        });
+
+        /*
+         * Standalone copy of src/lib/starfield.js (public/ is not bundled), without
+         * scroll handling since this page does not scroll.
+         */
+        function startStars(canvas) {
+          var ctx = canvas.getContext('2d');
+          if (!ctx) return null;
+          var w = 0, h = 0, radius = 0, list = [], frame = 0, last = 0;
+
+          function make() {
+            var count = Math.min(260, Math.max(60, Math.round(Math.PI * radius * radius * 2.2e-5)));
+            list = [];
+            for (var i = 0; i < count; i += 1) {
+              var mix = Math.random();
+              var size = mix < 0.72 ? 0.65 + Math.random() * 0.55 : mix < 0.95 ? 1.2 + Math.random() * 0.7 : 2 + Math.random() * 0.82;
+              var purple = Math.random() < 0.28;
+              list.push({
+                orbit: Math.sqrt(Math.random()) * radius,
+                angle: Math.random() * Math.PI * 2,
+                speed: 0.000025 + Math.random() * 0.00006,
+                size: size,
+                purple: purple,
+                base: purple ? 0.28 + Math.random() * 0.28 : 0.32 + Math.random() * 0.3,
+                amp: 0.08 + Math.random() * 0.16,
+                tw: 0.001 + Math.random() * 0.0018,
+                phase: Math.random() * Math.PI * 2
+              });
+            }
+          }
+
+          function resize() {
+            var dpr = Math.min(window.devicePixelRatio || 1, 2);
+            var widthChanged = window.innerWidth !== w;
+            w = window.innerWidth;
+            h = window.innerHeight;
+            canvas.width = Math.floor(w * dpr);
+            canvas.height = Math.floor(h * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            if (widthChanged) {
+              radius = Math.hypot(w, h) * 0.75;
+              make();
+            }
+          }
+
+          function draw(now, advance) {
+            ctx.clearRect(0, 0, w, h);
+            for (var i = 0; i < list.length; i += 1) {
+              var s = list[i];
+              if (advance) s.angle += s.speed * (1000 / 60);
+              var x = w / 2 + Math.cos(s.angle) * s.orbit;
+              var y = h / 2 + Math.sin(s.angle) * s.orbit;
+              if (x < -4 || x > w + 4 || y < -4 || y > h + 4) continue;
+              var twinkle = advance ? (Math.sin(now * s.tw + s.phase) + 1) * 0.5 : 0.5;
+              var alpha = Math.min(s.base + twinkle * s.amp, 0.82);
+              ctx.fillStyle = s.purple ? 'rgba(185, 149, 236, ' + alpha + ')' : 'rgba(248, 246, 255, ' + alpha + ')';
+              ctx.beginPath();
+              ctx.arc(x, y, s.size, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          function animated() { return root.dataset.fx !== 'off' && !document.hidden; }
+
+          function loop(now) {
+            frame = 0;
+            if (!animated()) return;
+            frame = requestAnimationFrame(loop);
+            if (now - last < 1000 / 30) return;
+            last = now;
+            draw(now, true);
+          }
+
+          function refresh() {
+            draw(performance.now(), false);
+            if (!frame && animated()) frame = requestAnimationFrame(loop);
+          }
+
+          resize();
+          refresh();
+          window.addEventListener('resize', function () { resize(); refresh(); }, { passive: true });
+          document.addEventListener('visibilitychange', refresh);
+          return { refresh: refresh };
+        }
+
+        var stars = startStars(document.querySelector('.stars'));
+        applyLanguage(root.lang === 'ar' ? 'ar' : 'en');
+        applyFx(root.dataset.fx !== 'off');
       })();
     </script>
   </body>

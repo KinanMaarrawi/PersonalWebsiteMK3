@@ -6,7 +6,8 @@
  */
 
 export const PROJECT_COLUMNS =
-  'id, sort_order, title, github_url, tech, image_path, description_en, description_ar';
+  'id, slug, sort_order, title, github_url, live_url, tech, period, image_path, description_en, description_ar, ' +
+  'long_description_en, long_description_ar, highlights_en, highlights_ar';
 
 export const ABOUT_COLUMNS =
   'id, slug, sort_order, image_path, image_alt_en, image_alt_ar, body_en, body_ar';

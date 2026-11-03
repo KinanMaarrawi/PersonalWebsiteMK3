@@ -48,21 +48,21 @@ export default function Footer() {
 
           <ContactBlock>
             <Label>{footerContent.linkedin}</Label>
-            <Value href={settings.linkedin_url} target="_blank" rel="noreferrer">
+            <Value href={settings.linkedin_url} target="_blank" rel="noopener noreferrer">
               {settings.linkedin_url}
             </Value>
           </ContactBlock>
 
           <ContactBlock>
             <Label>{footerContent.github}</Label>
-            <Value href={settings.github_url} target="_blank" rel="noreferrer">
+            <Value href={settings.github_url} target="_blank" rel="noopener noreferrer">
               {settings.github_url}
             </Value>
           </ContactBlock>
 
           <ContactBlock>
             <Label>{footerContent.cv}</Label>
-            <Value href={settings.cv_url} target="_blank" rel="noreferrer">
+            <Value href={settings.cv_url} target="_blank" rel="noopener noreferrer">
               {footerContent.cvText}
             </Value>
           </ContactBlock>

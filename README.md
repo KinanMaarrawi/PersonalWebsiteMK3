@@ -81,8 +81,18 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 
 ## Architecture / Design Notes
 - `App.jsx` composes the page as four sections: `hero`, `about`, `projects`, `contact`.
-- Hero runs a one-time session boot sequence (`sessionStorage`) before revealing content.
-- `GlobalStarfield` draws a full-page starfield using a single canvas, with frame capping and resize handling.
+- Hero runs a one-time session boot sequence (`sessionStorage`) before revealing content. Any
+  key, click or scroll skips it.
+- `src/lib/starfield.js` draws the starfield on a fixed, viewport-sized canvas; scrolling
+  shifts the field so stars still travel with the page. It pauses in hidden tabs.
+  `public/404.html` carries a small standalone copy.
+- **fx toggle**: one switch (`data-fx` on `<html>`, `src/preferences.js`) for the custom
+  cursor, starfield motion, boot sequence, typing, popup morph and language wipe. Set before
+  first paint, defaults to off under `prefers-reduced-motion`, remembered per visitor.
+- Project cards open a native `<dialog>` popup routed by `#project/<slug>` (shareable, back
+  button closes it). With View Transitions the card morphs into the popup.
+- Switching language runs a directional wipe (`src/languageWipe.js`): the new language is
+  revealed behind a scanline moving in its reading direction.
 - Navigation is section-based using anchor scrolling, with a floating nav shown after the hero on desktop.
 - Contact is direct: `mailto:` and outbound profile links, with the addresses stored in Supabase.
 - All content (projects, About tabs, hero role/tagline, stack, contact links, CV) lives in
@@ -103,8 +113,7 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 ## Responsive Strategy
 - Layouts use fluid widths, clamp-based sizing, and section-level breakpoints.
 - Desktop gets floating section navigation; mobile keeps interaction simpler.
-- Motion is reduced where possible with `prefers-reduced-motion` handling, applied
-  site-wide rather than per-component.
+- Motion follows the fx toggle site-wide; `prefers-reduced-motion` sets its default.
 
 ---
 
@@ -116,7 +125,8 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 - The typing animation is hidden from assistive tech (`aria-hidden`) with the completed
   text exposed once, so screen readers are not re-interrupted on every character.
 - Every interactive element has a `:focus-visible` ring.
-- Project cards are real links, so they are keyboard-reachable and open in a new tab.
+- Project cards are real `#project/<slug>` links; the popup is a modal `<dialog>`, so focus
+  is contained, Escape closes it, and focus returns to the card.
 
 ---
 

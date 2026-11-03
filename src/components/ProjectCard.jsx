@@ -8,18 +8,30 @@ import { resolveAssetUrl } from '../lib/supabase.js';
  * `imageUrl` overrides the resolved storage path; the admin uses it to preview a
  * locally selected file (a blob: URL) before it has been uploaded anywhere.
  *
- * Note: description and tech are hidden above 768px by design — on desktop the card
- * is image + title only.
+ * Clicking opens the project's popup (Projects.jsx) via its #project/<slug> link, so
+ * the card is still a real, keyboard-reachable link that can be shared or opened in a
+ * new tab.
  */
-export function ProjectCard({ project, language = 'en', imageUrl, preview = false }) {
+export function ProjectCard({ project, language = 'en', imageUrl, preview = false, onOpen, openLabel = '' }) {
   const src = imageUrl || resolveAssetUrl(project.image_path);
   const linkProps = preview
     ? { as: 'div' }
-    : { href: project.github_url, target: '_blank', rel: 'noopener noreferrer' };
+    : {
+        href: `#project/${encodeURIComponent(project.slug)}`,
+        'aria-haspopup': 'dialog',
+        'aria-label': `${openLabel} ${project.title}`.trim(),
+        'data-project-card': project.slug,
+        onClick: event => {
+          // Let modified clicks (new tab, etc.) behave like a normal link.
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+          event.preventDefault();
+          onOpen?.(project);
+        }
+      };
 
   return (
     <Card {...linkProps}>
-      {src ? <CardImage src={src} alt={project.title} loading="lazy" decoding="async" /> : <CardImagePlaceholder />}
+      {src ? <CardImage src={src} alt="" loading="lazy" decoding="async" /> : <CardImagePlaceholder />}
       <CardBody>
         <CardTitle>{project.title}</CardTitle>
         <CardDescription>{project[`description_${language}`]}</CardDescription>
@@ -29,10 +41,7 @@ export function ProjectCard({ project, language = 'en', imageUrl, preview = fals
   );
 }
 
-/*
- * An anchor rather than a click-handled div: cards are navigation, so they need to
- * be reachable by keyboard, announced as links, and openable in a new tab.
- */
+/* An anchor rather than a click-handled div: reachable by keyboard and shareable. */
 const Card = styled.a`
   position: relative;
   background: rgba(18, 14, 27, 0.92);
@@ -90,7 +99,7 @@ const CardImage = styled.img`
 const CardBody = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.2rem;
   padding: 0.95rem 1rem 1.05rem;
   min-width: 0;
@@ -116,36 +125,34 @@ const CardTitle = styled.h3`
 `;
 
 const CardDescription = styled.p`
-  display: none;
-  margin: 0;
+  margin: 0.15rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  color: rgba(241, 236, 247, 0.74);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   @media (max-width: 768px) {
-    display: block;
     font-size: 0.82rem;
     line-height: 1.35;
     color: rgba(241, 236, 247, 0.82);
+    -webkit-line-clamp: unset;
     overflow: visible;
-    white-space: normal;
     word-break: break-word;
   }
 `;
 
 const CardTech = styled.p`
-  display: none;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    display: block;
-    font-size: 0.74rem;
-    line-height: 1.25;
-    color: rgba(197, 174, 226, 0.72);
-    overflow: hidden;
-    word-break: break-word;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
+  margin: 0.25rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.74rem;
+  line-height: 1.25;
+  color: rgba(197, 174, 226, 0.72);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const CardImagePlaceholder = styled.div`

@@ -1,13 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
 import { useSiteContent } from '../useSiteContent.js';
+import { isFxOn } from '../preferences.js';
 
 const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
 const BOOT_TEXT = '> system.status: booting';
 
-const hasBootCompletedThisSession = () => {
+const readBootFlag = () => {
+  try {
+    return sessionStorage.getItem(BOOT_FLAG_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+
+const writeBootFlag = () => {
+  try {
+    sessionStorage.setItem(BOOT_FLAG_KEY, '1');
+  } catch {
+    // Without storage the boot simply plays again next visit.
+  }
+};
+
+/** The boot plays once per session, and never with fx off. */
+const shouldSkipBoot = () => {
   if (typeof window === 'undefined') return true;
-  return sessionStorage.getItem(BOOT_FLAG_KEY) === '1';
+  return readBootFlag() || !isFxOn();
 };
 
 export default function Hero() {
@@ -22,7 +40,7 @@ export default function Hero() {
   const [showPanel, setShowPanel] = useState(false);
   const [panelExpanded, setPanelExpanded] = useState(false);
   const [revealContent, setRevealContent] = useState(false);
-  const [scrollLocked, setScrollLocked] = useState(() => !hasBootCompletedThisSession());
+  const [scrollLocked, setScrollLocked] = useState(() => !shouldSkipBoot());
 
   useEffect(() => {
     if (!scrollLocked) return undefined;
@@ -45,20 +63,37 @@ export default function Hero() {
   }, [scrollLocked]);
 
   useEffect(() => {
-    // Run the boot sequence only once per browser session.
-    const seenThisSession = hasBootCompletedThisSession();
-    if (seenThisSession) {
+    const timers = [];
+    let rafId = 0;
+    let finished = false;
+
+    // Jumps straight to the finished state. Used when the boot should not play at
+    // all, and when the visitor presses a key, clicks, or tries to scroll mid-boot,
+    // so the scroll lock can never trap anyone.
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      for (const timer of timers) window.clearTimeout(timer);
+      cancelAnimationFrame(rafId);
+      removeSkipListeners();
       setTypedCount(BOOT_TEXT.length);
       setBootOnline(true);
       setShowPanel(true);
       setPanelExpanded(true);
       setRevealContent(true);
+      writeBootFlag();
       setScrollLocked(false);
+    };
+
+    const SKIP_EVENTS = ['keydown', 'pointerdown', 'wheel', 'touchstart'];
+    const removeSkipListeners = () => SKIP_EVENTS.forEach(type => window.removeEventListener(type, finish));
+
+    if (shouldSkipBoot()) {
+      finish();
       return undefined;
     }
 
-    const timers = [];
-    let rafId = 0;
+    SKIP_EVENTS.forEach(type => window.addEventListener(type, finish, { passive: true }));
 
     const typeText = index => {
       setTypedCount(index);
@@ -83,8 +118,10 @@ export default function Hero() {
             timers.push(
               window.setTimeout(() => {
                 setRevealContent(true);
-                sessionStorage.setItem(BOOT_FLAG_KEY, '1');
+                writeBootFlag();
                 setScrollLocked(false);
+                removeSkipListeners();
+                finished = true;
               }, 720)
             );
           }, 480)
@@ -100,6 +137,7 @@ export default function Hero() {
     return () => {
       for (const timer of timers) window.clearTimeout(timer);
       cancelAnimationFrame(rafId);
+      removeSkipListeners();
     };
   }, []);
 

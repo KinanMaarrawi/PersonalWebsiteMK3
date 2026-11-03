@@ -2,43 +2,71 @@
   "projects": [
     {
       "id": "956f7003-37b8-4fd0-b10e-ff557c43a8a6",
+      "slug": "jawab",
       "sort_order": 10,
       "title": "Jawab",
       "github_url": "https://github.com/KinanMaarrawi/jawab",
+      "live_url": null,
       "tech": "Python + React",
+      "period": "",
       "image_path": "/answer.webp",
       "description_en": "AI-powered semantic search over the Quran that answers a question with a composed reading of related verses.",
-      "description_ar": "بحث دلالي في القرآن مدعوم بالذكاء الاصطناعي، يجيب عن سؤالك بقراءة مركّبة من آيات مترابطة."
+      "description_ar": "بحث دلالي في القرآن مدعوم بالذكاء الاصطناعي، يجيب عن سؤالك بقراءة مركّبة من آيات مترابطة.",
+      "long_description_en": "",
+      "long_description_ar": "",
+      "highlights_en": [],
+      "highlights_ar": []
     },
     {
       "id": "59e4fb5d-8afb-4a00-94f5-dddcfc52d742",
+      "slug": "sabener",
       "sort_order": 20,
       "title": "Säbener",
       "github_url": "https://github.com/KinanMaarrawi/Sabener",
+      "live_url": null,
       "tech": "React + Express",
+      "period": "",
       "image_path": "/13.webp",
       "description_en": "Live FC Bayern dashboard — news, matchday and youth-academy deep cuts, with German headlines auto-translated.",
-      "description_ar": "لوحة متابعة مباشرة لبايرن ميونخ: أخبار، مباريات، وأخبار أكاديمية الشباب، مع ترجمة تلقائية للعناوين الألمانية."
+      "description_ar": "لوحة متابعة مباشرة لبايرن ميونخ: أخبار، مباريات، وأخبار أكاديمية الشباب، مع ترجمة تلقائية للعناوين الألمانية.",
+      "long_description_en": "",
+      "long_description_ar": "",
+      "highlights_en": [],
+      "highlights_ar": []
     },
     {
       "id": "3537a9db-fad4-4399-8b82-b162a19e9236",
+      "slug": "dorz",
       "sort_order": 30,
       "title": "Dorz 'Book a Ride'",
       "github_url": "https://github.com/KinanMaarrawi/DorzMVP",
+      "live_url": null,
       "tech": "Kotlin",
+      "period": "",
       "image_path": "/8.webp",
       "description_en": "Ride-booking MVP built for my Internship @ DORZ.",
-      "description_ar": "نسخة MVP لحجز الرحلات، بنيتها خلال تدريبي في DORZ."
+      "description_ar": "نسخة MVP لحجز الرحلات، بنيتها خلال تدريبي في DORZ.",
+      "long_description_en": "",
+      "long_description_ar": "",
+      "highlights_en": [],
+      "highlights_ar": []
     },
     {
       "id": "484c5f79-e49f-45e4-8cf7-4c335a756f9d",
+      "slug": "terra-tui",
       "sort_order": 40,
       "title": "terra-tui",
       "github_url": "https://github.com/KinanMaarrawi/terra-tui",
+      "live_url": null,
       "tech": "Haskell",
+      "period": "",
       "image_path": "/11.webp",
       "description_en": "A procedural terrain explorer and TUI sandbox, built in Haskell.",
-      "description_ar": "مستكشف تضاريس إجرائي وبيئة TUI للتجربة، مبني بلغة Haskell."
+      "description_ar": "مستكشف تضاريس إجرائي وبيئة TUI للتجربة، مبني بلغة Haskell.",
+      "long_description_en": "",
+      "long_description_ar": "",
+      "highlights_en": [],
+      "highlights_ar": []
     }
   ],
   "about": [
