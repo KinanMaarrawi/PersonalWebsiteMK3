@@ -13,7 +13,7 @@ export const ABOUT_COLUMNS =
   'id, slug, sort_order, image_path, image_alt_en, image_alt_ar, body_en, body_ar';
 
 export const EXPERIENCE_COLUMNS =
-  'id, kind, branch, title_en, title_ar, org_en, org_ar, start_date, end_date, summary_en, summary_ar, ' +
+  'id, kind, branch, ref, title_en, title_ar, org_en, org_ar, start_date, end_date, summary_en, summary_ar, ' +
   'did_en, did_ar, learned_en, learned_ar, tech, project_id';
 
 export const SETTINGS_COLUMNS =

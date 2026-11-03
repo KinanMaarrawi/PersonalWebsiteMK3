@@ -76,7 +76,15 @@ function RowText({ row, strings, language, projectsById, expanded, onToggle }) {
   const { entry, type } = row;
   const title = entry[`title_${language}`];
   const org = entry[`org_${language}`];
-  const titleLine = org ? `${title} · ${org}` : title;
+  // Orgs and module names are often English inside Arabic text; <bdi> keeps each one
+  // in its own order (otherwise "180 Degrees Consulting" renders as "Degrees Consulting 180").
+  const titleLine = org ? (
+    <>
+      {title} · <bdi>{org}</bdi>
+    </>
+  ) : (
+    title
+  );
 
   let refs = null;
   let message = titleLine;
@@ -88,7 +96,11 @@ function RowText({ row, strings, language, projectsById, expanded, onToggle }) {
     dateLabel = strings.now;
   } else if (type === 'tag') {
     refs = 'tag: graduation';
-    message = `${strings.graduation} · ${title}`;
+    message = (
+      <>
+        {strings.graduation} · <bdi>{title}</bdi>
+      </>
+    );
   } else if (type === 'root') {
     message = strings.initialCommit(org || title);
     muted = true;
@@ -96,6 +108,8 @@ function RowText({ row, strings, language, projectsById, expanded, onToggle }) {
     // A literal git message: isolate it so Arabic layout cannot reorder the quotes.
     message = <bdi dir="ltr">{`Merge branch '${entry.branch}'`}</bdi>;
     muted = true;
+  } else if (type === 'milestone') {
+    refs = entry.ref || null;
   } else if (type === 'branch') {
     refs = entry.branch;
     const ends = entry.end_date ? formatMonth(entry.end_date, language) : strings.present;
@@ -138,13 +152,13 @@ function RowText({ row, strings, language, projectsById, expanded, onToggle }) {
               {entry[`did_${language}`].map(item => (
                 <li key={`+${item}`} className="is-added">
                   <span className="visually-hidden">{strings.did}: </span>
-                  {item}
+                  <bdi>{item}</bdi>
                 </li>
               ))}
               {entry[`learned_${language}`].map(item => (
                 <li key={`~${item}`} className="is-learned">
                   <span className="visually-hidden">{strings.learned}: </span>
-                  {item}
+                  <bdi>{item}</bdi>
                 </li>
               ))}
             </ul>

@@ -12,6 +12,7 @@ const KINDS = {
 const EMPTY_ENTRY = {
   kind: 'role',
   branch: '',
+  ref: '',
   published: false,
   title_en: '',
   title_ar: '',
@@ -151,6 +152,7 @@ function ExperienceForm({ entry, projects, onSaved, onCancel }) {
     const payload = {
       kind: draft.kind,
       branch: draft.kind === 'role' ? draft.branch.trim().toLowerCase() : 'main',
+      ref: draft.kind === 'milestone' ? (draft.ref || '').trim() : '',
       published: draft.published,
       title_en: draft.title_en.trim(),
       title_ar: draft.title_ar.trim(),
@@ -203,8 +205,13 @@ function ExperienceForm({ entry, projects, onSaved, onCancel }) {
               required
             />
           </Field>
+        ) : draft.kind === 'milestone' ? (
+          <Field>
+            Label next to the hash (optional)
+            <Input value={draft.ref || ''} onChange={e => update('ref', e.target.value)} maxLength={40} placeholder="tag: year-2" />
+          </Field>
         ) : (
-          <Note>Degrees and milestones sit on main.</Note>
+          <Note>The degree is main.</Note>
         )}
       </TwoColumns>
 
