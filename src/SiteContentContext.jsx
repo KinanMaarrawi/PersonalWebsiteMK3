@@ -45,7 +45,6 @@ export function SiteContentProvider({ children }) {
   const [about, setAbout] = useState(INITIAL.about);
   const [experience, setExperience] = useState(INITIAL.experience);
   const [settings, setSettings] = useState(INITIAL.settings);
-  const [status, setStatus] = useState(isSupabaseConfigured ? 'loading' : 'snapshot');
 
   useEffect(() => {
     if (!isSupabaseConfigured) return undefined;
@@ -67,14 +66,10 @@ export function SiteContentProvider({ children }) {
         if (!live.settings.error && live.settings.data && !sameAs(live.settings.data, snapshot.settings)) {
           setSettings({ ...live.settings.data, cv_url: liveCvUrl(live.settings.data.cv_updated_at) });
         }
-
-        const anyFailure = live.projects.error || live.about.error || live.experience.error || live.settings.error;
-        setStatus(anyFailure ? 'snapshot' : 'live');
       })
       .catch(() => {
         // Network failure, abort, or a paused project: the snapshot already in state
-        // is a correct, complete page, so this is not surfaced to visitors.
-        if (!cancelled) setStatus('snapshot');
+        // is a correct, complete page, so there is nothing to do.
       })
       .finally(() => window.clearTimeout(timeoutId));
 
@@ -86,8 +81,8 @@ export function SiteContentProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ projects, about, experience, settings, status }),
-    [projects, about, experience, settings, status]
+    () => ({ projects, about, experience, settings }),
+    [projects, about, experience, settings]
   );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;

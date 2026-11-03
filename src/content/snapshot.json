@@ -279,6 +279,26 @@
       "project_id": null
     },
     {
+      "id": "a5c86cdb-c00a-4356-b5ce-9844457ccbb8",
+      "kind": "milestone",
+      "branch": "main",
+      "ref": "tag: foundation",
+      "title_en": "chore: foundation year",
+      "title_ar": "chore: السنة التحضيرية",
+      "org_en": "",
+      "org_ar": "",
+      "start_date": "2024-06-01",
+      "end_date": null,
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [],
+      "did_ar": [],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
       "id": "00e8fe41-82aa-4433-bc48-564116a45905",
       "kind": "degree",
       "branch": "main",

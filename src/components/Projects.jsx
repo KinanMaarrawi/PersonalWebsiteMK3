@@ -10,10 +10,15 @@ import { ProjectDialog } from './ProjectDialog.jsx';
 const HASH_PREFIX = '#project/';
 const MORPH_NAME = 'project-morph';
 
-const slugFromHash = () =>
-  typeof window !== 'undefined' && window.location.hash.startsWith(HASH_PREFIX)
-    ? decodeURIComponent(window.location.hash.slice(HASH_PREFIX.length))
-    : null;
+const slugFromHash = () => {
+  if (typeof window === 'undefined' || !window.location.hash.startsWith(HASH_PREFIX)) return null;
+  try {
+    return decodeURIComponent(window.location.hash.slice(HASH_PREFIX.length));
+  } catch {
+    // A malformed link (e.g. "#project/%E0") must not take the page down.
+    return null;
+  }
+};
 
 const cardFor = slug => document.querySelector(`[data-project-card="${CSS.escape(slug)}"]`);
 const panel = () => document.querySelector('.project-dialog-panel');

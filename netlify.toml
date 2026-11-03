@@ -9,6 +9,18 @@
   to = "/admin.html"
   status = 200
 
+# Baseline hardening for every response. The CSP is deliberately limited to the
+# directives that cannot break anything (no framing, no plugins, no <base> hijack);
+# a full script/style policy would need hashes for the inline pre-paint scripts.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
 [[headers]]
   for = "/admin.html"
   [headers.values]
