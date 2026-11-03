@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
+import { useSiteContent } from '../useSiteContent.js';
 
 const BOOT_FLAG_KEY = 'hero_boot_sequence_done_v1';
 const BOOT_TEXT = '> system.status: booting';
@@ -10,8 +11,11 @@ const hasBootCompletedThisSession = () => {
 };
 
 export default function Hero() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
+  const { settings } = useSiteContent();
   const heroContent = content.hero;
+  const role = settings[`hero_role_${language}`];
+  const tagline = settings[`hero_tagline_${language}`];
   const [typedCount, setTypedCount] = useState(0);
   const [dotCount, setDotCount] = useState(0);
   const [bootOnline, setBootOnline] = useState(false);
@@ -139,7 +143,12 @@ export default function Hero() {
 
                   <div className="hero-identity">
                     <p className={`hero-name hero-reveal-step hero-step-3 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.name}</p>
-                    <p className={`hero-role hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>{heroContent.role}</p>
+                    {role ? (
+                      <p className={`hero-role hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>{role}</p>
+                    ) : null}
+                    {tagline ? (
+                      <p className={`hero-tagline hero-reveal-step hero-step-4 ${revealContent ? 'is-revealed' : ''}`}>{tagline}</p>
+                    ) : null}
                   </div>
                 </div>
 

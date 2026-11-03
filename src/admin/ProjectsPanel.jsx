@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { supabase } from '../lib/supabase.js';
-import { Button, Note, Panel, PanelTitle, Row } from './theme.js';
+import { Button, Item, List, Note, Panel, PanelTitle, Row } from './theme.js';
 import { ProjectForm } from './ProjectForm.jsx';
+import { swapOrder } from './shared.js';
 
 export function ProjectsPanel() {
   const [projects, setProjects] = useState([]);
@@ -29,19 +30,12 @@ export function ProjectsPanel() {
     await load();
   }, [load]);
 
-  /** Reorders by swapping sort_order with the adjacent row, so gaps never matter. */
   const move = async (index, direction) => {
     const target = projects[index + direction];
-    const current = projects[index];
     if (!target) return;
 
     setError('');
-    const [first, second] = await Promise.all([
-      supabase.from('projects').update({ sort_order: target.sort_order }).eq('id', current.id),
-      supabase.from('projects').update({ sort_order: current.sort_order }).eq('id', target.id)
-    ]);
-
-    const failure = first.error || second.error;
+    const failure = await swapOrder('projects', projects[index], target);
     if (failure) setError(failure.message);
     await load();
   };
@@ -129,26 +123,7 @@ export function ProjectsPanel() {
   );
 }
 
-const List = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
 
-const Item = styled.li`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.65rem 0.75rem;
-  border: 1px solid rgba(126, 62, 190, 0.28);
-  border-radius: 0.5rem;
-  opacity: ${props => (props.$dim ? 0.55 : 1)};
-`;
 
 const ItemMain = styled.div`
   min-width: 0;

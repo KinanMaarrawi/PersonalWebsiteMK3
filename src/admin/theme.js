@@ -122,3 +122,24 @@ export const Note = styled.p`
   line-height: 1.45;
   color: ${props => (props.$error ? '#ffb4b4' : 'rgba(241, 236, 247, 0.62)')};
 `;
+
+export const List = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const Item = styled.li`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(126, 62, 190, 0.28);
+  border-radius: 0.5rem;
+  opacity: ${props => (props.$dim ? 0.55 : 1)};
+`;

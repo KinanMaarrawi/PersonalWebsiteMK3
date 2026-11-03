@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { STORAGE_BUCKET, supabase } from '../lib/supabase.js';
+import { supabase } from '../lib/supabase.js';
+import { MAX_IMAGE_BYTES, nextSortOrder, uploadImage } from './shared.js';
 import { ProjectCard } from '../components/ProjectCard.jsx';
 import { Button, Field, Input, Note, Panel, PanelTitle, Row, Textarea } from './theme.js';
 
@@ -13,21 +14,6 @@ const EMPTY_PROJECT = {
   image_path: null,
   published: true
 };
-
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-
-/** Uploads to a UUID-keyed path so re-uploading never collides with an existing file. */
-async function uploadProjectImage(file) {
-  const extension = (file.name.split('.').pop() || 'png').toLowerCase();
-  const path = `projects/${crypto.randomUUID()}.${extension}`;
-
-  const { error } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .upload(path, file, { cacheControl: '31536000', upsert: false });
-
-  if (error) throw error;
-  return path;
-}
 
 export function ProjectForm({ project, onSaved, onCancel }) {
   const [draft, setDraft] = useState(project || EMPTY_PROJECT);
@@ -60,7 +46,7 @@ export function ProjectForm({ project, onSaved, onCancel }) {
 
     try {
       let imagePath = draft.image_path;
-      if (file) imagePath = await uploadProjectImage(file);
+      if (file) imagePath = await uploadImage('projects', file);
 
       const payload = {
         title: draft.title.trim(),
@@ -76,17 +62,9 @@ export function ProjectForm({ project, onSaved, onCancel }) {
         const { error: updateError } = await supabase.from('projects').update(payload).eq('id', project.id);
         if (updateError) throw updateError;
       } else {
-        // Place new projects at the end of the existing order.
-        const { data: last } = await supabase
-          .from('projects')
-          .select('sort_order')
-          .order('sort_order', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
         const { error: insertError } = await supabase
           .from('projects')
-          .insert({ ...payload, sort_order: (last?.sort_order ?? 0) + 10 });
+          .insert({ ...payload, sort_order: await nextSortOrder('projects') });
         if (insertError) throw insertError;
       }
 

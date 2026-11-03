@@ -37,7 +37,6 @@ export const content = {
       title: 'أهلاً وسهلاً',
       subtitle: 'Welcome - for my non-Arabic speakers.',
       name: 'Kinan Maarrawi',
-      role: 'CS Student @ UoBD',
       buttons: {
         about: 'About',
         projects: 'Projects',
@@ -47,58 +46,11 @@ export const content = {
     },
     about: {
       kicker: '> profile_terminal',
-      tablistLabel: 'Profile sections',
-      commands: [
-        {
-          id: 'whoami',
-          image: '/about-whoami.webp',
-          imageAlt: 'Kinan Maarrawi portrait',
-          lines: [
-            '>whoami',
-            'I’m a Computer Science student who likes building things that feel useful, not just impressive in a demo.',
-            'I care about the parts people do not always see: how systems are designed, how they fail, how they stay secure, and how they become something real people can actually use.',
-            'Computer Science with Software Engineering (Year 2) @ University of Birmingham Dubai'
-          ]
-        },
-        {
-          id: 'origin',
-          image: '/about-origin.webp',
-          imageAlt: 'Kinan Maarrawi outdoors',
-          lines: [
-            '>origin',
-            'From Damascus, Syria',
-            'Raised in Dubai',
-            'I’m Syrian, and I grew up in Dubai, so a lot of who I am comes from both places. Syria is not just where my family is from, and Dubai is not just where I lived. Both shaped how I think: stay practical, adapt quickly, and build things that have real value instead of just looking good.'
-          ]
-        },
-        {
-          id: 'interests',
-          image: '/about-interests.webp',
-          imageAlt: 'Kinan Maarrawi by a car',
-          lines: [
-            '>interests', 
-            'Linux', 
-            'PC hardware + homelabbing', 
-            'Outside of tech, I\'m into cars, fitness, music and history.'
-          ]
-        },
-        {
-          id: 'currently',
-          image: '/about-currently.webp',
-          imageAlt: 'Kinan Maarrawi in a city setting',
-          lines: [
-            '>currently',
-            'Working through uni assignments',
-            'Building projects that teach me something useful',
-            'Trying to become a better software engineer while still having a life outside my computer screen'
-          ]
-        }
-      ]
+      tablistLabel: 'Profile sections'
     },
     projects: {
       kicker: '> top_projects',
-      stackCommand: 'stack:',
-      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS']
+      stackCommand: 'stack:'
     },
     footer: {
       kicker: 'contact',
@@ -131,7 +83,6 @@ export const content = {
       title: 'Welcome',
       subtitle: 'أهلاً وسهلاً - للزوار اللي ما بيحكوا إنجليزي.',
       name: 'كنان المعراوي',
-      role: 'طالب CS @ UoBD',
       buttons: {
         about: 'من أنا؟',
         projects: 'شغلي',
@@ -141,56 +92,11 @@ export const content = {
     },
     about: {
       kicker: '> profile_terminal',
-      tablistLabel: 'أقسام الملف الشخصي',
-      commands: [
-        {
-          id: 'whoami',
-          image: '/about-whoami.webp',
-          imageAlt: 'صورة لكنان معراوي',
-          lines: [
-            '>whoami',
-            'أنا طالب كمبيوتر ساينس, بحب برمج وإشتغل عمشاريع مو بس شكل, من المهم عندي تكون هي المشاريع  فعلاً مفيدة.',
-            'بهتم بالتفاصيل اللي الناس غالباً ما بتشوفها: كيف النظام بينبنى، وين ممكن يوقع، كيف منخليه آمن، وكيف منصممه ليصير شي حقيقي الناس تقدر تستخدمه بسهولة.',
-            'حالياً, عمأدرس علوم حاسوب مع هندسة برمجيات - السنة الثانية بجامعة برمنغهام بدبي'          
-          ]
-        },
-        {
-          id: 'origin',
-          image: '/about-origin.webp',
-          imageAlt: 'كنان معراوي في الخارج',
-          lines: [
-            '>origin',
-            'من دمشق، سوريا',
-            'عشت وكبرت بدبي',
-            'أنا سوري وكبرت بدبي، فطبيعي جزء كبير مني جاي من المكانين. سوريا بالنسبة إلي مو بس وطن، ودبي مو بس مدينة عشت فيها. التنين شكلوا طريقة تفكيري: كون عملي، أتأقلم بسرعة، وأبني شي له قيمة بدل ما يكون بس شكل.'
-          ]
-        },
-        {
-          id: 'interests',
-          image: '/about-interests.webp',
-          imageAlt: 'كنان معراوي بجانب سيارة',
-          lines: [
-            '>interests', 
-            'Linux', 
-            'الكمبيوترات والهاردوير', 'وخارج عالم التكنولوجيا: بحب السيارات، الرياضة، الموسيقى، والتاريخ.'
-          ]
-        },
-        {
-          id: 'currently',
-          image: '/about-currently.webp',
-          imageAlt: 'كنان معراوي في أجواء مدينة',
-          lines: [
-            '>currently', 
-            'عم حاول خلّص شغل الجامعة', 
-            'بشتغل عمشاريع بتعلمني شي مفيد لما يكون عندي وقت'
-          ]
-        }
-      ]
+      tablistLabel: 'أقسام الملف الشخصي'
     },
     projects: {
       kicker: '> top_projects',
-      stackCommand: 'stack:',
-      stackItems: ['Java', 'Python', 'JavaScript', 'Haskell', 'C', 'SQL', 'Git', 'React', 'Next.js', 'Linux', 'TailwindCSS']
+      stackCommand: 'stack:'
     },
     footer: {
       kicker: 'contact',

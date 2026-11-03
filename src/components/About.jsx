@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
+import { useSiteContent } from '../useSiteContent.js';
+import { resolveAssetUrl } from '../lib/supabase.js';
 
 function preloadImage(src) {
   if (typeof window === 'undefined') return Promise.resolve();
@@ -19,14 +21,29 @@ function preloadImage(src) {
   });
 }
 
+/** Turns about_sections rows into the terminal's commands for one language. */
+function toCommands(rows, language) {
+  return rows.map(row => ({
+    id: row.slug,
+    image: resolveAssetUrl(row.image_path),
+    imageAlt: row[`image_alt_${language}`],
+    lines: [`>${row.slug}`, ...row[`body_${language}`].split('\n').map(line => line.trim()).filter(Boolean)]
+  }));
+}
+
 export default function About() {
-  const { content, direction } = useLanguage();
-  const aboutContent = content.about;
-  const commands = aboutContent.commands;
+  const { content, direction, language } = useLanguage();
+  const { about } = useSiteContent();
+  if (!about.length) return null;
+  return <AboutTerminal key={about.map(row => row.slug).join()} rows={about} content={content.about} direction={direction} language={language} />;
+}
+
+function AboutTerminal({ rows, content: aboutContent, direction, language }) {
+  const commands = useMemo(() => toCommands(rows, language), [rows, language]);
   const tabRefs = useRef([]);
-  const [activeCommandId, setActiveCommandId] = useState('whoami');
+  const [activeCommandId, setActiveCommandId] = useState(commands[0].id);
   const [typedOutput, setTypedOutput] = useState('');
-  const [imageCurrentId, setImageCurrentId] = useState('whoami');
+  const [imageCurrentId, setImageCurrentId] = useState(commands[0].id);
   const [imagePrevId, setImagePrevId] = useState(null);
 
   const typingVersionRef = useRef(0);
@@ -63,7 +80,7 @@ export default function About() {
 
   useEffect(() => {
     commands.forEach(command => {
-      preloadImage(command.image);
+      if (command.image) preloadImage(command.image);
     });
   }, [commands]);
 
@@ -173,7 +190,7 @@ export default function About() {
 
         <div className="about-image-panel">
           <div className="about-image-frame">
-            {imagePrevId ? (
+            {imagePrevId && imagePrevCommand.image ? (
               <img
                 key={`prev-${imagePrevId}`}
                 src={imagePrevCommand.image}
@@ -184,14 +201,16 @@ export default function About() {
               />
             ) : null}
 
-            <img
-              key={`current-${imageCurrentId}`}
-              src={imageCurrentCommand.image}
-              alt={imageCurrentCommand.imageAlt}
-              width="960"
-              height="1200"
-              className="about-image-layer is-incoming"
-            />
+            {imageCurrentCommand.image ? (
+              <img
+                key={`current-${imageCurrentId}`}
+                src={imageCurrentCommand.image}
+                alt={imageCurrentCommand.imageAlt}
+                width="960"
+                height="1200"
+                className="about-image-layer is-incoming"
+              />
+            ) : null}
           </div>
         </div>
       </div>

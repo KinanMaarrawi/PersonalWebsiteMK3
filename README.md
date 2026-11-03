@@ -48,14 +48,17 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 |  |- favicons and web manifest
 |- admin.html                 (second Vite entry point, served at /admin)
 |- netlify.toml
+|- scripts/snapshot-content.mjs  (prebuild: bundles a copy of all content + files)
 |- supabase/
 |  |- migrations/             (schema + RLS policies)
+|  |- functions/trigger-rebuild/  (admin "Publish site" -> Netlify build hook)
 |- src/
 |  |- App.jsx
 |  |- main.jsx
 |  |- index.css
-|  |- SiteContentContext.jsx  (fetches content, falls back to the bundled copy)
-|  |- content/fallback.js     (bundled content)
+|  |- SiteContentContext.jsx  (renders the snapshot, then swaps in newer live content)
+|  |- content/queries.js      (public reads, shared by the browser and the snapshot script)
+|  |- content/snapshot.json   (generated; committed so offline builds still work)
 |  |- lib/supabase.js
 |  |- admin/                  (admin app, never loaded by the public page)
 |  |- assets/fonts/
@@ -82,9 +85,14 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 - `GlobalStarfield` draws a full-page starfield using a single canvas, with frame capping and resize handling.
 - Navigation is section-based using anchor scrolling, with a floating nav shown after the hero on desktop.
 - Contact is direct: `mailto:` and outbound profile links, with the addresses stored in Supabase.
-- `SiteContentProvider` fetches projects and settings once on load. Every failure mode — no
-  credentials, network error, 3s timeout — falls through to `src/content/fallback.js`, so the
-  page is never empty and the backend can never break the site.
+- All content (projects, About tabs, hero role/tagline, stack, contact links, CV) lives in
+  Supabase. `npm run build` first runs `scripts/snapshot-content.mjs`, which writes
+  `src/content/snapshot.json` and downloads storage images and the CV into `public/snapshot/`.
+- `SiteContentProvider` renders the snapshot immediately, then fetches live content and only
+  re-renders the parts that changed since the build. Every failure mode — no credentials,
+  network error, 3s timeout, a paused project — leaves the snapshot in place, images included,
+  so the backend can never break the site. If Supabase is unreachable at build time the script
+  keeps the committed snapshot and the build still succeeds.
 - Writes are gated entirely by Postgres Row Level Security, not by application code. The
   publishable key in the bundle is safe by design; `private.is_admin()` is the only gate.
 - The admin app is a separate Vite entry point rather than a route, so none of its code is
@@ -119,7 +127,7 @@ cp .env.example .env   # fill in the Supabase project URL and publishable key
 npm run dev
 ```
 
-Without a `.env` the site still runs — it renders the bundled fallback content, and `/admin`
+Without a `.env` the site still runs — it renders the committed snapshot, and `/admin`
 reports that it is unconfigured.
 
 ---
@@ -127,5 +135,11 @@ reports that it is unconfigured.
 ## Editing Content
 Go to `/admin` and sign in with GitHub. The account must have a row in the `admins` table;
 everything else is rejected by Row Level Security. From there you can add, edit, reorder,
-publish/unpublish and delete projects, replace the CV, and change the contact links. Changes
-are live on the next page load — no commit, no deploy.
+publish/unpublish and delete projects and About tabs, replace the CV, and change the contact
+links, hero role/tagline and tech stack. Changes are live on the next page load — no commit,
+no deploy.
+
+**Publish site** (in Site settings) starts a Netlify build so the bundled snapshot catches up
+too; until then, a Supabase outage would show the content as of the last build. It needs a
+Netlify build hook stored as the `NETLIFY_BUILD_HOOK_URL` secret on the `trigger-rebuild`
+Edge Function (Netlify → Site configuration → Build hooks; Supabase → Edge Functions → Secrets).

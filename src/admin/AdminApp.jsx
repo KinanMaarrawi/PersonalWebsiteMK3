@@ -3,6 +3,7 @@ import { isSupabaseConfigured, supabase } from '../lib/supabase.js';
 import { AdminGlobalStyle, Button, Kicker, Note, Page, Panel, PanelTitle, Row } from './theme.js';
 import { ProjectsPanel } from './ProjectsPanel.jsx';
 import { SettingsPanel } from './SettingsPanel.jsx';
+import { AboutPanel } from './AboutPanel.jsx';
 
 /**
  * Three states, resolved in order: no session, session without admin rights, and
@@ -119,6 +120,7 @@ export function AdminApp() {
               </Button>
             </Row>
             <ProjectsPanel />
+            <AboutPanel />
             <SettingsPanel />
           </>
         ) : null}

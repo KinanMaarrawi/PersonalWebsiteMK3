@@ -1,0 +1,111 @@
+{
+  "projects": [
+    {
+      "id": "956f7003-37b8-4fd0-b10e-ff557c43a8a6",
+      "sort_order": 10,
+      "title": "Jawab",
+      "github_url": "https://github.com/KinanMaarrawi/jawab",
+      "tech": "Python + React",
+      "image_path": "/answer.webp",
+      "description_en": "AI-powered semantic search over the Quran that answers a question with a composed reading of related verses.",
+      "description_ar": "بحث دلالي في القرآن مدعوم بالذكاء الاصطناعي، يجيب عن سؤالك بقراءة مركّبة من آيات مترابطة."
+    },
+    {
+      "id": "59e4fb5d-8afb-4a00-94f5-dddcfc52d742",
+      "sort_order": 20,
+      "title": "Säbener",
+      "github_url": "https://github.com/KinanMaarrawi/Sabener",
+      "tech": "React + Express",
+      "image_path": "/13.webp",
+      "description_en": "Live FC Bayern dashboard — news, matchday and youth-academy deep cuts, with German headlines auto-translated.",
+      "description_ar": "لوحة متابعة مباشرة لبايرن ميونخ: أخبار، مباريات، وأخبار أكاديمية الشباب، مع ترجمة تلقائية للعناوين الألمانية."
+    },
+    {
+      "id": "3537a9db-fad4-4399-8b82-b162a19e9236",
+      "sort_order": 30,
+      "title": "Dorz 'Book a Ride'",
+      "github_url": "https://github.com/KinanMaarrawi/DorzMVP",
+      "tech": "Kotlin",
+      "image_path": "/8.webp",
+      "description_en": "Ride-booking MVP built for my Internship @ DORZ.",
+      "description_ar": "نسخة MVP لحجز الرحلات، بنيتها خلال تدريبي في DORZ."
+    },
+    {
+      "id": "484c5f79-e49f-45e4-8cf7-4c335a756f9d",
+      "sort_order": 40,
+      "title": "terra-tui",
+      "github_url": "https://github.com/KinanMaarrawi/terra-tui",
+      "tech": "Haskell",
+      "image_path": "/11.webp",
+      "description_en": "A procedural terrain explorer and TUI sandbox, built in Haskell.",
+      "description_ar": "مستكشف تضاريس إجرائي وبيئة TUI للتجربة، مبني بلغة Haskell."
+    }
+  ],
+  "about": [
+    {
+      "id": "17ff8aa0-07b9-47f9-84e3-d280d0057efc",
+      "slug": "whoami",
+      "sort_order": 10,
+      "image_path": "/about-whoami.webp",
+      "image_alt_en": "Kinan Maarrawi portrait",
+      "image_alt_ar": "صورة لكنان المعراوي",
+      "body_en": "I’m a Computer Science student who likes building things that feel useful, not just impressive in a demo.\nI care about the parts people do not always see: how systems are designed, how they fail, how they stay secure, and how they become something real people can actually use.\nMEng Computer Science with Software Engineering (Year 3) @ University of Birmingham Dubai",
+      "body_ar": "أنا طالب علوم حاسوب، بحب برمج وإشتغل ع مشاريع مو بس شكل، من المهم عندي تكون المشاريع فعلاً مفيدة.\nبهتم بالتفاصيل اللي الناس غالباً ما بتشوفها: كيف النظام بينبنى، وين ممكن يوقع، كيف منخليه آمن، وكيف منصممه ليصير شي حقيقي الناس تقدر تستخدمه بسهولة.\nحالياً، عم أدرس MEng علوم حاسوب مع هندسة برمجيات - السنة الثالثة بجامعة برمنغهام دبي"
+    },
+    {
+      "id": "847147c6-ad7d-4987-989e-c30389b66c5b",
+      "slug": "origin",
+      "sort_order": 20,
+      "image_path": "/about-origin.webp",
+      "image_alt_en": "Kinan Maarrawi outdoors",
+      "image_alt_ar": "كنان المعراوي في الخارج",
+      "body_en": "From Damascus, Syria\nRaised in Dubai\nI’m Syrian, and I grew up in Dubai, so a lot of who I am comes from both places. Syria is not just where my family is from, and Dubai is not just where I lived. Both shaped how I think: stay practical, adapt quickly, and build things that have real value instead of just looking good.",
+      "body_ar": "من دمشق، سوريا\nعشت وكبرت بدبي\nأنا سوري وكبرت بدبي، فطبيعي جزء كبير مني جاي من المكانين. سوريا بالنسبة إلي مو بس وطن، ودبي مو بس مدينة عشت فيها. التنين شكلوا طريقة تفكيري: كون عملي، أتأقلم بسرعة، وأبني شي له قيمة بدل ما يكون بس شكل."
+    },
+    {
+      "id": "3cbf701f-cc1d-4540-abe1-9dc8d2c6f675",
+      "slug": "interests",
+      "sort_order": 30,
+      "image_path": "/about-interests.webp",
+      "image_alt_en": "Kinan Maarrawi by a car",
+      "image_alt_ar": "كنان المعراوي بجانب سيارة",
+      "body_en": "Linux\nPC hardware + homelabbing\nOutside of tech, I'm into cars, fitness, music and history.",
+      "body_ar": "Linux\nالكمبيوترات والهاردوير\nوخارج عالم التكنولوجيا: بحب السيارات، الرياضة، الموسيقى، والتاريخ."
+    },
+    {
+      "id": "ea032d4c-52f0-4247-b3b5-4989b12ecccb",
+      "slug": "currently",
+      "sort_order": 40,
+      "image_path": "/about-currently.webp",
+      "image_alt_en": "Kinan Maarrawi in a city setting",
+      "image_alt_ar": "كنان المعراوي في أجواء مدينة",
+      "body_en": "Working through uni assignments\nBuilding projects that teach me something useful\nTrying to become a better software engineer while still having a life outside my computer screen",
+      "body_ar": "عم حاول خلّص شغل الجامعة\nبشتغل ع مشاريع بتعلمني شي مفيد لما يكون عندي وقت\nعم حاول صير مهندس برمجيات أحسن، بس من دون ما تكون كل حياتي قدام الشاشة"
+    }
+  ],
+  "settings": {
+    "email": "kinan@maarrawi.com",
+    "linkedin_url": "https://www.linkedin.com/in/kinan-maarrawi/",
+    "github_url": "https://github.com/KinanMaarrawi",
+    "cv_updated_at": "2026-11-03T06:22:09.049+00:00",
+    "stack_items": [
+      "Java",
+      "Python",
+      "JavaScript",
+      "Kotlin",
+      "Haskell",
+      "C",
+      "SQL",
+      "React",
+      "Git",
+      "Linux"
+    ],
+    "hero_role_en": "CS Student @ UoB Dubai",
+    "hero_role_ar": "طالب علوم حاسوب @ جامعة برمنغهام دبي",
+    "hero_tagline_en": "",
+    "hero_tagline_ar": ""
+  },
+  "assets": {
+    "cv/CV.pdf": "/snapshot/cv/CV.pdf"
+  }
+}

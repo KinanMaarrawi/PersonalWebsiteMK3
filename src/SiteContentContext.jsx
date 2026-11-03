@@ -1,30 +1,49 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SiteContentContext } from './siteContentStore.js';
-import { FALLBACK_PROJECTS, FALLBACK_SETTINGS } from './content/fallback.js';
+import snapshot from './content/snapshot.json';
+import { CV_OBJECT_PATH, fetchPublicContent } from './content/queries.js';
 import { isSupabaseConfigured, supabase, STORAGE_BUCKET } from './lib/supabase.js';
 
-/** Give up on the network and render bundled content after this long. */
+/** Give up on the network and keep the bundled snapshot after this long. */
 const FETCH_TIMEOUT_MS = 3000;
 
-/** Fixed storage path for the CV, uploaded with upsert so the URL never changes. */
-const CV_OBJECT_PATH = 'cv/CV.pdf';
+/** The CV committed to public/, used only if no CV has ever been uploaded. */
+const COMMITTED_CV_URL = '/CV.pdf';
 
 /**
- * Builds the public CV link. Falls back to the committed PDF when nothing has been
- * uploaded yet. `cv_updated_at` is appended as a cache-buster so replacing the file
- * is visible immediately despite the CDN caching the unchanged URL.
+ * Live CV link. `cv_updated_at` is a cache-buster so a replaced file shows up
+ * immediately despite the CDN caching the unchanged URL.
  */
-function buildCvUrl(cvUpdatedAt) {
-  if (!cvUpdatedAt) return FALLBACK_SETTINGS.cv_url;
-
+function liveCvUrl(cvUpdatedAt) {
+  if (!cvUpdatedAt) return COMMITTED_CV_URL;
   const base = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${CV_OBJECT_PATH}`;
   return `${base}?v=${new Date(cvUpdatedAt).getTime()}`;
 }
 
+/**
+ * The snapshot's rows reference storage paths; swap those for the copies the build
+ * downloaded into public/snapshot/, so nothing in the initial render depends on
+ * Supabase being up.
+ */
+const localiseRows = rows =>
+  rows.map(row => (snapshot.assets[row.image_path] ? { ...row, image_path: snapshot.assets[row.image_path] } : row));
+
+const INITIAL = {
+  projects: localiseRows(snapshot.projects),
+  about: localiseRows(snapshot.about),
+  settings: {
+    ...snapshot.settings,
+    cv_url: snapshot.assets[CV_OBJECT_PATH] || (snapshot.settings.cv_updated_at ? liveCvUrl(snapshot.settings.cv_updated_at) : COMMITTED_CV_URL)
+  }
+};
+
+const sameAs = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
 export function SiteContentProvider({ children }) {
-  const [projects, setProjects] = useState(FALLBACK_PROJECTS);
-  const [settings, setSettings] = useState(FALLBACK_SETTINGS);
-  const [status, setStatus] = useState(isSupabaseConfigured ? 'loading' : 'fallback');
+  const [projects, setProjects] = useState(INITIAL.projects);
+  const [about, setAbout] = useState(INITIAL.about);
+  const [settings, setSettings] = useState(INITIAL.settings);
+  const [status, setStatus] = useState(isSupabaseConfigured ? 'loading' : 'snapshot');
 
   useEffect(() => {
     if (!isSupabaseConfigured) return undefined;
@@ -33,40 +52,26 @@ export function SiteContentProvider({ children }) {
     const timeoutId = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     let cancelled = false;
 
-    async function loadContent() {
-      const [projectsResult, settingsResult] = await Promise.all([
-        supabase
-          .from('projects')
-          .select('id, sort_order, published, title, github_url, tech, image_path, description_en, description_ar')
-          .eq('published', true)
-          .order('sort_order', { ascending: true })
-          .abortSignal(controller.signal),
-        supabase
-          .from('site_settings')
-          .select('email, linkedin_url, github_url, cv_updated_at')
-          .eq('id', 1)
-          .maybeSingle()
-          .abortSignal(controller.signal)
-      ]);
+    fetchPublicContent(supabase, query => query.abortSignal(controller.signal))
+      .then(live => {
+        if (cancelled) return;
 
-      if (cancelled) return;
+        // Each part degrades on its own, and only replaces the snapshot when the
+        // content actually changed since the last build. Identical content keeps the
+        // locally served copies and avoids re-rendering (and re-typing) anything.
+        if (!live.projects.error && !sameAs(live.projects.data, snapshot.projects)) setProjects(live.projects.data);
+        if (!live.about.error && !sameAs(live.about.data, snapshot.about)) setAbout(live.about.data);
+        if (!live.settings.error && live.settings.data && !sameAs(live.settings.data, snapshot.settings)) {
+          setSettings({ ...live.settings.data, cv_url: liveCvUrl(live.settings.data.cv_updated_at) });
+        }
 
-      // Each half degrades on its own: a failed settings read should not discard
-      // projects that loaded fine.
-      if (projectsResult.data?.length) setProjects(projectsResult.data);
-      if (settingsResult.data) {
-        setSettings({ ...settingsResult.data, cv_url: buildCvUrl(settingsResult.data.cv_updated_at) });
-      }
-
-      const anyFailure = projectsResult.error || settingsResult.error;
-      setStatus(anyFailure ? 'fallback' : 'live');
-    }
-
-    loadContent()
+        const anyFailure = live.projects.error || live.about.error || live.settings.error;
+        setStatus(anyFailure ? 'snapshot' : 'live');
+      })
       .catch(() => {
-        // Network failure, abort, or an unreachable project: the bundled content
-        // already in state is a correct page, so this is not surfaced to visitors.
-        if (!cancelled) setStatus('fallback');
+        // Network failure, abort, or a paused project: the snapshot already in state
+        // is a correct, complete page, so this is not surfaced to visitors.
+        if (!cancelled) setStatus('snapshot');
       })
       .finally(() => window.clearTimeout(timeoutId));
 
@@ -77,7 +82,7 @@ export function SiteContentProvider({ children }) {
     };
   }, []);
 
-  const value = useMemo(() => ({ projects, settings, status }), [projects, settings, status]);
+  const value = useMemo(() => ({ projects, about, settings, status }), [projects, about, settings, status]);
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;
 }

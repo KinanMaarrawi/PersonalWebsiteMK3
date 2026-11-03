@@ -6,10 +6,11 @@ import { ProjectCard } from './ProjectCard.jsx';
 
 export default function Projects() {
   const { content, language } = useLanguage();
-  const { projects } = useSiteContent();
+  const { projects, settings } = useSiteContent();
   const projectsContent = content.projects;
   const stackRef = useRef(null);
   const [stackVisible, setStackVisible] = useState(false);
+  const hasStack = settings.stack_items.length > 0;
 
   useEffect(() => {
     const node = stackRef.current;
@@ -26,17 +27,19 @@ export default function Projects() {
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [hasStack]);
 
   return (
     <Section dir="ltr">
       <Content>
         <p className="system-kicker projects-kicker">{projectsContent.kicker}</p>
 
-        <StackOutput ref={stackRef} className={stackVisible ? 'is-visible' : ''}>
-          <StackCommand>{projectsContent.stackCommand}</StackCommand>
-          <StackInline>{projectsContent.stackItems.join(' · ')}</StackInline>
-        </StackOutput>
+        {hasStack ? (
+          <StackOutput ref={stackRef} className={stackVisible ? 'is-visible' : ''}>
+            <StackCommand>{projectsContent.stackCommand}</StackCommand>
+            <StackInline>{settings.stack_items.join(' · ')}</StackInline>
+          </StackOutput>
+        ) : null}
 
         <CardsGrid>
           {projects.map(project => (

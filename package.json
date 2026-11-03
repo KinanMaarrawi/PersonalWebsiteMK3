@@ -10,7 +10,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prebuild": "node scripts/snapshot-content.mjs",
+    "snapshot": "node scripts/snapshot-content.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
