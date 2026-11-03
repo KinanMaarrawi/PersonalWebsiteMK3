@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { ProjectDetails } from './ProjectDetails.jsx';
+import { raiseCursor } from '../lib/cursorLayer.js';
 
 /**
  * Modal popup for one project, built on a native <dialog>: showModal() gives focus
@@ -15,7 +16,11 @@ export function ProjectDialog({ project, language, direction, strings, onClose }
   useLayoutEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    if (project && !dialog.open) dialog.showModal();
+    if (project && !dialog.open) {
+      dialog.showModal();
+      // The dialog just entered the top layer above the cursor; put the cursor back on top.
+      raiseCursor();
+    }
     if (!project && dialog.open) dialog.close();
   }, [project]);
 

@@ -44,6 +44,7 @@ export const content = {
       name: 'Kinan Maarrawi',
       buttons: {
         about: 'About',
+        experience: 'Experience',
         projects: 'Projects',
         contact: 'Contact'
       },
@@ -113,6 +114,7 @@ export const content = {
       name: 'كنان المعراوي',
       buttons: {
         about: 'من أنا؟',
+        experience: 'خبرتي',
         projects: 'شغلي',
         contact: 'تواصل'
       },

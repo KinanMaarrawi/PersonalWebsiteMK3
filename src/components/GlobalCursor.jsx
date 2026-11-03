@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { enterTopLayer } from '../lib/cursorLayer.js';
 
 export default function GlobalCursor() {
   const cursorRef = useRef(null);
@@ -8,6 +9,7 @@ export default function GlobalCursor() {
     if (!supportsFinePointer || !cursorRef.current) return undefined;
 
     const cursor = cursorRef.current;
+    enterTopLayer(cursor);
 
     const onPointerMove = event => {
       cursor.style.opacity = '1';
@@ -27,5 +29,5 @@ export default function GlobalCursor() {
     };
   }, []);
 
-  return <div ref={cursorRef} className="app-cursor" aria-hidden="true" />;
+  return <div ref={cursorRef} className="app-cursor" popover="manual" aria-hidden="true" />;
 }

@@ -61,13 +61,13 @@ function GraphCell({ row, laneCount }) {
             }, ${laneX(row.curve.to)} ${CURVE_END}`}
           />
         ) : null}
-        <circle
-          className={`gitlog-node lane-${row.lane} is-${row.type} ${row.future ? 'is-future' : ''}`}
-          cx={nodeX}
-          cy={NODE_Y}
-          r={row.type === 'head' ? 4.5 : row.type === 'merge' ? 2.6 : 3.6}
-        />
       </svg>
+      {/* The node is an element like the lines (not SVG), so both snap to the same
+          pixel grid and stay centred on each other at any zoom level. */}
+      <span
+        className={`gitlog-node lane-${row.lane} is-${row.type} ${row.future ? 'is-future' : ''}`}
+        style={{ left: nodeX, top: NODE_Y }}
+      />
     </div>
   );
 }

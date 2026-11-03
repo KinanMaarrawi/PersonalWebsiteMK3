@@ -132,6 +132,87 @@
       "project_id": null
     },
     {
+      "id": "38841ec1-9bcf-4040-a768-320f2bb47e1e",
+      "kind": "role",
+      "branch": "club/180dc",
+      "title_en": "Consultant",
+      "title_ar": "مستشار",
+      "org_en": "180 Degrees Consulting",
+      "org_ar": "180 Degrees Consulting",
+      "start_date": "2026-10-01",
+      "end_date": null,
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [
+        "Sole owner of the volunteer-retention workstream for Thrift for Good, a UAE charity retailer.",
+        "Designing an automated volunteer-engagement playbook covering the full lifecycle, from onboarding to offboarding."
+      ],
+      "did_ar": [
+        "المسؤول الوحيد عن ملف الحفاظ على المتطوعين لـ Thrift for Good، متجر خيري بالإمارات.",
+        "عم صمّم دليل تلقائي لتفاعل المتطوعين بيغطي كل المراحل، من الانضمام لحد المغادرة."
+      ],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
+      "id": "008cc7dc-3ea4-4cf4-89e6-ad5dcf6b738b",
+      "kind": "role",
+      "branch": "internship/dorz",
+      "title_en": "Software Engineering Intern",
+      "title_ar": "متدرب هندسة برمجيات",
+      "org_en": "DORZ",
+      "org_ar": "DORZ",
+      "start_date": "2025-07-01",
+      "end_date": "2025-09-01",
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [
+        "Sole engineer responsible for building a ride-booking feature for the DORZ app, delivering it end-to-end independently.",
+        "Integrated APIs for fare estimation, live ride tracking, and saved locations.",
+        "Developed the feature using Kotlin as part of the app's ride-booking workflow."
+      ],
+      "did_ar": [
+        "المهندس الوحيد المسؤول عن بناء ميزة حجز الرحلات بتطبيق DORZ، وسلّمتها من الأول للآخر لحالي.",
+        "ربطت APIs لتقدير الأجرة، وتتبّع الرحلة مباشرة، والأماكن المحفوظة.",
+        "طوّرت الميزة بـ Kotlin كجزء من مسار حجز الرحلات بالتطبيق."
+      ],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [
+        "Kotlin"
+      ],
+      "project_id": "3537a9db-fad4-4399-8b82-b162a19e9236"
+    },
+    {
+      "id": "388023eb-4c82-4b7d-8d6f-6f73ada44a3e",
+      "kind": "role",
+      "branch": "club/sea",
+      "title_en": "Head of Volunteers",
+      "title_ar": "مسؤول المتطوعين",
+      "org_en": "Student Entrepreneurship Association",
+      "org_ar": "Student Entrepreneurship Association",
+      "start_date": "2024-10-01",
+      "end_date": "2026-09-01",
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [
+        "Helped grow SEA from 0 to 500+ members within one academic year.",
+        "Led on-ground volunteer coordination and operational execution for Entrepreneurship Day.",
+        "Contributed to an event recognised with the Outstanding Activity of the Year award."
+      ],
+      "did_ar": [
+        "ساعدت SEA تكبر من 0 لأكتر من 500 عضو خلال سنة دراسية وحدة.",
+        "قدت تنسيق المتطوعين على الأرض والتنفيذ التشغيلي ليوم ريادة الأعمال (Entrepreneurship Day).",
+        "شاركت بفعالية انكرّمت بجائزة Outstanding Activity of the Year."
+      ],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
       "id": "00e8fe41-82aa-4433-bc48-564116a45905",
       "kind": "degree",
       "branch": "main",

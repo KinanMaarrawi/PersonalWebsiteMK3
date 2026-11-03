@@ -859,8 +859,11 @@ html[data-fx="off"] .app-cursor {
 
 .app-cursor {
   position: fixed;
-  top: 0;
-  left: 0;
+  /* Reset the popover UA styles (it lives in the top layer, see cursorLayer.js). */
+  inset: 0 auto auto 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
   width: 7px;
   height: 7px;
   margin-left: -3.5px;
@@ -1078,18 +1081,18 @@ html:has(.project-dialog[open]) {
   border-color: rgba(157, 110, 214, 0.75);
 }
 
-/* Entrance when the card morph is unavailable (no View Transitions). */
-.project-dialog[open] .project-dialog-panel {
+/*
+ * Entrance when the card morph is not used (no View Transitions, fx off, or the card
+ * is off screen). Keyed to an attribute set before opening rather than disabled
+ * during the morph: removing a disabling rule afterwards would restart the animation
+ * and make the popup blink out and back in.
+ */
+html[data-project-entrance] .project-dialog[open] .project-dialog-panel {
   animation: project-dialog-in 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.project-dialog[open]::backdrop {
+html[data-project-entrance] .project-dialog[open]::backdrop {
   animation: project-backdrop-in 240ms ease;
-}
-
-html[data-project-morph] .project-dialog[open] .project-dialog-panel,
-html[data-project-morph] .project-dialog[open]::backdrop {
-  animation: none;
 }
 
 @keyframes project-dialog-in {
@@ -1215,8 +1218,8 @@ html[data-project-morph]::view-transition-new(root) {
 
 .gitlog-line {
   position: absolute;
-  width: 1.5px;
-  margin-left: -0.75px;
+  width: 2px;
+  margin-left: -1px;
   background: var(--lane);
   transform-origin: top;
 }
@@ -1240,22 +1243,33 @@ html[data-project-morph]::view-transition-new(root) {
 }
 
 .gitlog-node {
-  fill: var(--lane);
-  stroke: var(--bg-base);
-  stroke-width: 2;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--lane);
+  box-shadow: 0 0 0 2px var(--bg-base);
+}
+
+.gitlog-node.is-merge {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
 }
 
 .gitlog-node.is-head {
-  fill: var(--bg-base);
-  stroke: var(--lane);
-  stroke-width: 2;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border: 2px solid var(--lane);
+  background: var(--bg-base);
 }
 
 .gitlog-node.is-future {
-  fill: var(--bg-base);
-  stroke: var(--lane);
-  stroke-width: 1.5;
-  stroke-dasharray: 2 2;
+  border: 1.5px dashed var(--lane);
+  background: var(--bg-base);
+  box-shadow: none;
 }
 
 .gitlog-text {
@@ -1394,6 +1408,7 @@ button.gitlog-head:hover .gitlog-message {
 }
 
 .gitlog-svg,
+.gitlog-node,
 .gitlog-text {
   opacity: 0;
   transition: opacity 260ms ease calc(var(--row, 0) * 70ms + 80ms);
@@ -1404,6 +1419,7 @@ button.gitlog-head:hover .gitlog-message {
 }
 
 .gitlog.is-drawn .gitlog-svg,
+.gitlog.is-drawn .gitlog-node,
 .gitlog.is-drawn .gitlog-text {
   opacity: 1;
 }
@@ -1417,6 +1433,7 @@ html[data-fx="off"] .gitlog .gitlog-line {
 }
 
 html[data-fx="off"] .gitlog .gitlog-svg,
+html[data-fx="off"] .gitlog .gitlog-node,
 html[data-fx="off"] .gitlog .gitlog-text {
   opacity: 1;
 }

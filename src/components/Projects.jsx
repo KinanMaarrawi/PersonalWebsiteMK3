@@ -29,12 +29,17 @@ function morph(slug, opening, update) {
   // opened from the experience log) reads as a glitch, so use the plain entrance.
   const rect = card?.getBoundingClientRect();
   const visible = rect && rect.bottom > 0 && rect.top < window.innerHeight;
+  const root = document.documentElement;
   if (!visible || !isFxOn() || typeof document.startViewTransition !== 'function') {
+    // The dialog's own CSS entrance is used only on this path. It is keyed to an
+    // attribute set before opening, never toggled afterwards, so it cannot restart.
+    if (opening) root.dataset.projectEntrance = 'plain';
     update();
+    if (!opening) delete root.dataset.projectEntrance;
     return;
   }
 
-  const root = document.documentElement;
+  delete root.dataset.projectEntrance;
   root.dataset.projectMorph = opening ? 'open' : 'close';
   const before = opening ? card : panel();
   if (before) before.style.viewTransitionName = MORPH_NAME;

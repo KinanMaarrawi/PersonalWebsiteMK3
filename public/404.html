@@ -163,10 +163,68 @@
 
       html[data-fx="off"] .cursor { animation: none; }
       html[data-fx="off"] * { transition: none !important; }
+
+      /* Custom cursor, as on the main site (src/components/GlobalCursor.jsx). */
+      .cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        width: 7px;
+        height: 7px;
+        margin: -3.5px 0 0 -3.5px;
+        border-radius: 50%;
+        background: #7e3ebe;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate3d(-100px, -100px, 0);
+        transition: transform 70ms linear, opacity 120ms ease;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        html:not([data-fx="off"]),
+        html:not([data-fx="off"]) a,
+        html:not([data-fx="off"]) button { cursor: none !important; }
+      }
+
+      @media (hover: none), (pointer: coarse) {
+        .cursor-dot { display: none; }
+      }
+
+      html[data-fx="off"] .cursor-dot { display: none; }
+
+      /* Language wipe, as on the main site (src/languageWipe.js). */
+      html[data-wipe]::view-transition-old(root),
+      html[data-wipe]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+      html[data-wipe="ltr"]::view-transition-new(root) { animation: wipe-ltr 480ms cubic-bezier(0.65, 0, 0.35, 1) both; }
+      html[data-wipe="rtl"]::view-transition-new(root) { animation: wipe-rtl 480ms cubic-bezier(0.65, 0, 0.35, 1) both; }
+      html[data-wipe]::view-transition-group(language-wipe) {
+        animation-duration: 480ms;
+        animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+      }
+      @keyframes wipe-ltr { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+      @keyframes wipe-rtl { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+
+      .wipe-line {
+        position: fixed;
+        top: 0;
+        width: 42px;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9;
+        view-transition-name: language-wipe;
+      }
+      .wipe-line.is-ltr {
+        background: linear-gradient(to left, rgba(176, 132, 232, 0.95) 0 1px, rgba(126, 62, 190, 0.22) 1px, transparent 100%);
+      }
+      .wipe-line.is-rtl {
+        background: linear-gradient(to right, rgba(176, 132, 232, 0.95) 0 1px, rgba(126, 62, 190, 0.22) 1px, transparent 100%);
+      }
     </style>
   </head>
   <body>
     <canvas class="stars" aria-hidden="true"></canvas>
+    <div class="cursor-dot" aria-hidden="true"></div>
 
     <div class="controls" dir="ltr">
       <button type="button" id="fx-toggle" aria-pressed="true">
@@ -179,7 +237,7 @@
 
     <main>
       <p class="kicker"><bdi>&gt; system.error</bdi></p>
-      <h1>404</h1>
+      <h1 id="code">404</h1>
       <p id="line-1"></p>
       <p><span id="line-2"></span><span class="cursor" aria-hidden="true"></span></p>
       <div class="links">
@@ -193,6 +251,7 @@
         var root = document.documentElement;
         var TEXT = {
           en: {
+            code: '404',
             line1: 'That path does not resolve.',
             line2: 'The page you were looking for is not here.',
             home: '> return home',
@@ -203,6 +262,7 @@
             fxLabel: 'Animations'
           },
           ar: {
+            code: '٤٠٤',
             line1: 'هذا المسار غير موجود.',
             line2: 'الصفحة اللي بتدور عليها مو هون.',
             home: 'العودة للرئيسية',
@@ -224,6 +284,7 @@
           var t = TEXT[lang];
           root.lang = lang;
           root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+          byId('code').textContent = t.code;
           byId('line-1').textContent = t.line1;
           byId('line-2').textContent = t.line2;
           byId('home-link').textContent = t.home;
@@ -242,11 +303,45 @@
           if (stars) stars.refresh();
         }
 
+        // Same directional wipe as the main site: the new language is revealed behind
+        // a line sweeping in its reading direction. Instant with fx off.
+        function wipeTo(next) {
+          var dir = next === 'ar' ? 'rtl' : 'ltr';
+          if (root.dataset.fx === 'off' || typeof document.startViewTransition !== 'function') {
+            applyLanguage(next);
+            return;
+          }
+          var band = 42;
+          var width = window.innerWidth;
+          var line = document.createElement('div');
+          line.className = 'wipe-line is-' + dir;
+          line.style.left = (dir === 'ltr' ? -(band - 1) : width - 1) + 'px';
+          document.body.appendChild(line);
+          root.dataset.wipe = dir;
+          var transition = document.startViewTransition(function () {
+            applyLanguage(next);
+            line.style.left = (dir === 'ltr' ? width - (band - 1) : -1) + 'px';
+          });
+          transition.finished.finally(function () {
+            line.remove();
+            delete root.dataset.wipe;
+          });
+        }
+
         byId('lang-toggle').addEventListener('click', function () {
           var next = root.lang === 'ar' ? 'en' : 'ar';
           save('site_language_v1', next);
-          applyLanguage(next);
+          wipeTo(next);
         });
+
+        var dot = document.querySelector('.cursor-dot');
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          window.addEventListener('pointermove', function (event) {
+            dot.style.opacity = '1';
+            dot.style.transform = 'translate3d(' + event.clientX + 'px, ' + event.clientY + 'px, 0)';
+          }, { passive: true });
+          document.documentElement.addEventListener('pointerleave', function () { dot.style.opacity = '0'; });
+        }
 
         byId('fx-toggle').addEventListener('click', function () {
           var on = root.dataset.fx === 'off';

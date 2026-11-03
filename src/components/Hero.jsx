@@ -194,6 +194,9 @@ export default function Hero() {
                   <a className="hero-btn hero-btn-stack" href="#about" onClick={scrollToSection('about')}>
                     {heroContent.buttons.about}
                   </a>
+                  <a className="hero-btn hero-btn-stack" href="#experience" onClick={scrollToSection('experience')}>
+                    {heroContent.buttons.experience}
+                  </a>
                   <a className="hero-btn hero-btn-stack" href="#projects" onClick={scrollToSection('projects')}>
                     {heroContent.buttons.projects}
                   </a>
