@@ -299,6 +299,32 @@
       "project_id": null
     },
     {
+      "id": "47721a13-bb26-4b04-81b6-982a1015660d",
+      "kind": "role",
+      "branch": "club/sea",
+      "ref": "",
+      "title_en": "Marketing Ambassador",
+      "title_ar": "سفير تسويق",
+      "org_en": "Student Entrepreneurship Association",
+      "org_ar": "Student Entrepreneurship Association",
+      "start_date": "2024-04-01",
+      "end_date": "2024-10-01",
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [
+        "Helped run SEA events on the ground.",
+        "Showed up reliably enough that the exec team created the Head of Volunteers role for me."
+      ],
+      "did_ar": [
+        "ساعدت بتنفيذ فعاليات SEA على الأرض.",
+        "كنت ملتزم لدرجة إنو الفريق التنفيذي عمل منصب مسؤول المتطوعين مخصوص إلي."
+      ],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
       "id": "00e8fe41-82aa-4433-bc48-564116a45905",
       "kind": "degree",
       "branch": "main",

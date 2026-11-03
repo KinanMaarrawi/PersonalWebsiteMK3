@@ -196,7 +196,7 @@ function ExperienceForm({ entry, projects, onSaved, onCancel }) {
         </Field>
         {draft.kind === 'role' ? (
           <Field>
-            Branch name (shown in the log)
+            Branch name (reuse an existing one, e.g. club/sea, to show a promotion on the same branch)
             <Input
               value={draft.branch}
               onChange={e => update('branch', e.target.value)}

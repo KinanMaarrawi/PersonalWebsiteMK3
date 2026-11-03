@@ -110,13 +110,13 @@ function RowText({ row, strings, language, projectsById, expanded, onToggle }) {
     muted = true;
   } else if (type === 'milestone') {
     refs = entry.ref || null;
-  } else if (type === 'branch') {
-    refs = entry.branch;
+  } else if (type === 'branch' || type === 'commit') {
+    refs = row.isTip ? entry.branch : null;
     const ends = entry.end_date ? formatMonth(entry.end_date, language) : strings.present;
     dateLabel = `${dateLabel} – ${ends}`;
   }
 
-  const expandable = (type === 'head' || type === 'branch' || type === 'milestone') && hasDetails(entry, language);
+  const expandable = ['head', 'branch', 'commit', 'milestone'].includes(type) && hasDetails(entry, language);
   const detailsId = `gitlog-details-${row.key}`;
   const project = entry.project_id ? projectsById.get(entry.project_id) : null;
 
