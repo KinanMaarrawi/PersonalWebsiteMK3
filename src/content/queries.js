@@ -12,6 +12,10 @@ export const PROJECT_COLUMNS =
 export const ABOUT_COLUMNS =
   'id, slug, sort_order, image_path, image_alt_en, image_alt_ar, body_en, body_ar';
 
+export const EXPERIENCE_COLUMNS =
+  'id, kind, branch, title_en, title_ar, org_en, org_ar, start_date, end_date, summary_en, summary_ar, ' +
+  'did_en, did_ar, learned_en, learned_ar, tech, project_id';
+
 export const SETTINGS_COLUMNS =
   'email, linkedin_url, github_url, cv_updated_at, stack_items, hero_role_en, hero_role_ar, hero_tagline_en, hero_tagline_ar';
 
@@ -30,6 +34,14 @@ export function fetchPublicContent(client, withSignal = query => query) {
     withSignal(
       client.from('about_sections').select(ABOUT_COLUMNS).eq('published', true).order('sort_order', { ascending: true })
     ),
+    withSignal(
+      client
+        .from('experience')
+        .select(EXPERIENCE_COLUMNS)
+        .eq('published', true)
+        .order('start_date', { ascending: false })
+        .order('id', { ascending: true })
+    ),
     withSignal(client.from('site_settings').select(SETTINGS_COLUMNS).eq('id', 1).maybeSingle())
-  ]).then(([projects, about, settings]) => ({ projects, about, settings }));
+  ]).then(([projects, about, experience, settings]) => ({ projects, about, experience, settings }));
 }

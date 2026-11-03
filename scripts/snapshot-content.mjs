@@ -57,8 +57,8 @@ async function main() {
     global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(TIMEOUT_MS) }) }
   });
 
-  const { projects, about, settings } = await fetchPublicContent(client);
-  const failure = projects.error || about.error || settings.error;
+  const { projects, about, experience, settings } = await fetchPublicContent(client);
+  const failure = projects.error || about.error || experience.error || settings.error;
   if (failure) throw new Error(failure.message);
   if (!settings.data) throw new Error('site_settings row is missing');
 
@@ -79,10 +79,17 @@ async function main() {
     assets[objectPath] = `/snapshot/${objectPath}`;
   }
 
-  const snapshot = { projects: projects.data, about: about.data, settings: settings.data, assets };
+  const snapshot = {
+    projects: projects.data,
+    about: about.data,
+    experience: experience.data,
+    settings: settings.data,
+    assets
+  };
   await fs.writeFile(SNAPSHOT_JSON, `${JSON.stringify(snapshot, null, 2)}\n`);
   console.log(
-    `[snapshot] ${projects.data.length} projects, ${about.data.length} about sections, ${files.size} files.`
+    `[snapshot] ${projects.data.length} projects, ${about.data.length} about sections, ` +
+      `${experience.data.length} experience entries, ${files.size} files.`
   );
 }
 

@@ -25,6 +25,7 @@ export const content = {
       items: {
         hero: 'hero',
         about: 'about',
+        experience: 'experience',
         projects: 'projects',
         contact: 'contact'
       }
@@ -51,6 +52,16 @@ export const content = {
     about: {
       kicker: '> profile_terminal',
       tablistLabel: 'Profile sections'
+    },
+    experience: {
+      kicker: '> git log --graph experience',
+      now: 'now',
+      present: 'present',
+      graduation: 'Graduation',
+      initialCommit: org => `Initial commit — started at ${org}`,
+      did: 'did',
+      learned: 'learned',
+      seeProject: 'see project'
     },
     projects: {
       kicker: '> top_projects',
@@ -83,6 +94,7 @@ export const content = {
       items: {
         hero: 'البداية',
         about: 'من أنا؟',
+        experience: 'خبرتي',
         projects: 'شغلي',
         contact: 'تواصل'
       }
@@ -109,6 +121,16 @@ export const content = {
     about: {
       kicker: '> profile_terminal',
       tablistLabel: 'أقسام الملف الشخصي'
+    },
+    experience: {
+      kicker: '> git log --graph experience',
+      now: 'الآن',
+      present: 'حتى الآن',
+      graduation: 'التخرج',
+      initialCommit: org => `أول commit — بلّشت بـ${org}`,
+      did: 'عملت',
+      learned: 'تعلّمت',
+      seeProject: 'شوف المشروع'
     },
     projects: {
       kicker: '> top_projects',

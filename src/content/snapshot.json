@@ -111,6 +111,46 @@
       "body_ar": "عم حاول خلّص شغل الجامعة\nبشتغل ع مشاريع بتعلمني شي مفيد لما يكون عندي وقت\nعم حاول صير مهندس برمجيات أحسن، بس من دون ما تكون كل حياتي قدام الشاشة"
     }
   ],
+  "experience": [
+    {
+      "id": "cf2cf097-bd6b-4242-9922-50b5bca97cb5",
+      "kind": "milestone",
+      "branch": "main",
+      "title_en": "Final MEng year at the Birmingham campus",
+      "title_ar": "السنة الأخيرة من الـMEng بحرم برمنغهام",
+      "org_en": "University of Birmingham",
+      "org_ar": "جامعة برمنغهام",
+      "start_date": "2027-09-01",
+      "end_date": null,
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [],
+      "did_ar": [],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
+      "id": "00e8fe41-82aa-4433-bc48-564116a45905",
+      "kind": "degree",
+      "branch": "main",
+      "title_en": "MEng Computer Science with Software Engineering",
+      "title_ar": "MEng علوم حاسوب مع هندسة برمجيات",
+      "org_en": "University of Birmingham Dubai",
+      "org_ar": "جامعة برمنغهام دبي",
+      "start_date": "2023-09-01",
+      "end_date": "2028-06-30",
+      "summary_en": "Integrated master's. Studying in Dubai, with the final MEng year at the Birmingham campus in the UK.",
+      "summary_ar": "ماجستير متكامل. عم أدرس بدبي، والسنة الأخيرة من الـMEng رح تكون بحرم برمنغهام ببريطانيا.",
+      "did_en": [],
+      "did_ar": [],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    }
+  ],
   "settings": {
     "email": "kinan@maarrawi.com",
     "linkedin_url": "https://www.linkedin.com/in/kinan-maarrawi/",

@@ -25,7 +25,11 @@ const panel = () => document.querySelector('.project-dialog-panel');
  */
 function morph(slug, opening, update) {
   const card = slug ? cardFor(slug) : null;
-  if (!card || !isFxOn() || typeof document.startViewTransition !== 'function') {
+  // Morph only from a card that is on screen; flying in from off-screen (e.g. when
+  // opened from the experience log) reads as a glitch, so use the plain entrance.
+  const rect = card?.getBoundingClientRect();
+  const visible = rect && rect.bottom > 0 && rect.top < window.innerHeight;
+  if (!visible || !isFxOn() || typeof document.startViewTransition !== 'function') {
     update();
     return;
   }
@@ -68,7 +72,9 @@ export default function Projects() {
       const next = slugFromHash();
       const current = openSlugRef.current;
       if (next === current) return;
-      if (!next) pushedRef.current = false;
+      // Any in-page navigation to a #project/ link (a card, or the experience log)
+      // pushed a history entry, so closing can step back through it.
+      pushedRef.current = Boolean(next);
       // Covers clicks, Escape (via history.back) and the browser's back/forward
       // buttons alike; the morph runs from whichever card is involved.
       morph(next || current, Boolean(next), () => setOpenSlug(next));
@@ -78,7 +84,6 @@ export default function Projects() {
   }, []);
 
   const open = useCallback(project => {
-    pushedRef.current = true;
     // Setting the hash adds a history entry and fires hashchange, which opens it.
     window.location.hash = `${HASH_PREFIX.slice(1)}${encodeURIComponent(project.slug)}`;
   }, []);

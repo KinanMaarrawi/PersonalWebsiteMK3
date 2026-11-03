@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLanguage } from '../useLanguage.js';
 
 /** Section ids in page order; labels come from i18n (nav.items). */
-const NAV_ITEMS = ['hero', 'about', 'projects', 'contact'].map(id => ({ id }));
+const NAV_ITEMS = ['hero', 'about', 'experience', 'projects', 'contact'].map(id => ({ id }));
 
 export default function FloatingSystemNav({ heroRef }) {
   const { content } = useLanguage();

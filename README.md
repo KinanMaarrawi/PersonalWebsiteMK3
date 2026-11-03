@@ -80,7 +80,10 @@ Runtime dependencies are deliberately limited to `react`, `react-dom`,
 ---
 
 ## Architecture / Design Notes
-- `App.jsx` composes the page as four sections: `hero`, `about`, `projects`, `contact`.
+- `App.jsx` composes the page as five sections: `hero`, `about`, `experience`, `projects`, `contact`.
+- Experience is drawn as `git log --graph` (`src/lib/gitGraph.js` lays it out): the degree is
+  `main`, each role forks onto its own branch at its start date and merges back at its end.
+  Everything after today is dashed. Rows expand into a short "diff" of what was done and learned.
 - Hero runs a one-time session boot sequence (`sessionStorage`) before revealing content. Any
   key, click or scroll skips it.
 - `src/lib/starfield.js` draws the starfield on a fixed, viewport-sized canvas; scrolling
@@ -145,7 +148,7 @@ reports that it is unconfigured.
 ## Editing Content
 Go to `/admin` and sign in with GitHub. The account must have a row in the `admins` table;
 everything else is rejected by Row Level Security. From there you can add, edit, reorder,
-publish/unpublish and delete projects and About tabs, replace the CV, and change the contact
+publish/unpublish and delete projects, About tabs and experience entries, replace the CV, and change the contact
 links, hero role/tagline and tech stack. Changes are live on the next page load — no commit,
 no deploy.
 

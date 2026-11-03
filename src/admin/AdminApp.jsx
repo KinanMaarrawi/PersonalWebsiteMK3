@@ -4,6 +4,7 @@ import { AdminGlobalStyle, Button, Kicker, Note, Page, Panel, PanelTitle, Row } 
 import { ProjectsPanel } from './ProjectsPanel.jsx';
 import { SettingsPanel } from './SettingsPanel.jsx';
 import { AboutPanel } from './AboutPanel.jsx';
+import { ExperiencePanel } from './ExperiencePanel.jsx';
 
 /**
  * Three states, resolved in order: no session, session without admin rights, and
@@ -121,6 +122,7 @@ export function AdminApp() {
             </Row>
             <ProjectsPanel />
             <AboutPanel />
+            <ExperiencePanel />
             <SettingsPanel />
           </>
         ) : null}

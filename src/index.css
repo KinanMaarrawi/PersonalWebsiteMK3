@@ -1163,3 +1163,266 @@ html[data-project-morph]::view-transition-new(root) {
     from { transform: translateY(24px); opacity: 0; }
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Experience as `git log --graph` (src/components/Experience.jsx)
+ * ------------------------------------------------------------------------ */
+
+.gitlog-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 5.5rem) clamp(1rem, 3vw, 2.4rem);
+}
+
+.gitlog-kicker {
+  margin-bottom: 1.1rem;
+}
+
+[dir="rtl"] .gitlog-kicker {
+  text-align: right;
+}
+
+.gitlog {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.gitlog .lane-0 { --lane: #9d6ed6; }
+.gitlog .lane-1 { --lane: rgba(197, 174, 226, 0.9); }
+.gitlog .lane-2 { --lane: rgba(222, 160, 214, 0.85); }
+.gitlog .lane-3 { --lane: rgba(160, 170, 230, 0.85); }
+.gitlog .lane-4 { --lane: rgba(241, 236, 247, 0.6); }
+
+.gitlog-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.7rem;
+  min-height: 2.9rem;
+}
+
+.gitlog-graph {
+  position: relative;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+/* Mirror the lanes in Arabic so main sits on the reading-start edge. */
+[dir="rtl"] .gitlog-graph {
+  transform: scaleX(-1);
+}
+
+.gitlog-line {
+  position: absolute;
+  width: 1.5px;
+  margin-left: -0.75px;
+  background: var(--lane);
+  transform-origin: top;
+}
+
+.gitlog-line.is-dashed {
+  background: repeating-linear-gradient(to bottom, var(--lane) 0 3px, transparent 3px 7px);
+  opacity: 0.7;
+}
+
+.gitlog-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.gitlog-curve {
+  fill: none;
+  stroke: var(--lane);
+  stroke-width: 1.5;
+}
+
+.gitlog-node {
+  fill: var(--lane);
+  stroke: var(--bg-base);
+  stroke-width: 2;
+}
+
+.gitlog-node.is-head {
+  fill: var(--bg-base);
+  stroke: var(--lane);
+  stroke-width: 2;
+}
+
+.gitlog-node.is-future {
+  fill: var(--bg-base);
+  stroke: var(--lane);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 2;
+}
+
+.gitlog-text {
+  min-width: 0;
+  padding-bottom: 0.85rem;
+}
+
+.gitlog-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.1rem 0 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+}
+
+button.gitlog-head:hover .gitlog-message {
+  color: #fff;
+}
+
+.gitlog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.55rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+[dir="rtl"] .gitlog-meta {
+  justify-content: flex-end;
+}
+
+.gitlog-hash {
+  color: rgba(197, 174, 226, 0.6);
+}
+
+.gitlog-refs {
+  color: #b084e8;
+}
+
+.gitlog-date {
+  color: rgba(187, 179, 199, 0.75);
+}
+
+.gitlog-message {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(241, 236, 247, 0.92);
+}
+
+.gitlog-message.is-muted {
+  color: rgba(187, 179, 199, 0.7);
+}
+
+.gitlog-text.is-future .gitlog-message {
+  color: rgba(187, 179, 199, 0.8);
+}
+
+.gitlog-toggle {
+  color: rgba(157, 110, 214, 0.9);
+}
+
+.gitlog-diff {
+  margin-top: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  border-inline-start: 1px solid rgba(126, 62, 190, 0.45);
+  background: rgba(18, 14, 27, 0.6);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: rgba(241, 236, 247, 0.84);
+}
+
+.gitlog-summary {
+  margin: 0 0 0.5rem;
+  max-width: 68ch;
+}
+
+.gitlog-changes {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+.gitlog-changes li::before {
+  display: inline-block;
+  width: 1.3em;
+  font-weight: 600;
+}
+
+.gitlog-changes .is-added::before {
+  content: '+';
+  color: rgba(150, 205, 160, 0.9);
+}
+
+.gitlog-changes .is-learned::before {
+  content: '~';
+  color: rgba(197, 174, 226, 0.9);
+}
+
+.gitlog-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.4rem;
+  font-size: 0.74rem;
+}
+
+[dir="rtl"] .gitlog-tech {
+  justify-content: flex-end;
+}
+
+.gitlog-tech span {
+  padding: 0.1rem 0.45rem;
+  border: 1px solid rgba(126, 62, 190, 0.4);
+  border-radius: 999px;
+}
+
+.gitlog-project {
+  color: #c5aee2;
+  text-decoration: none;
+}
+
+.gitlog-project:hover {
+  color: #fff;
+}
+
+/* Draw-in, once, when the log scrolls into view: oldest last, row by row. */
+.gitlog-line {
+  transform: scaleY(0);
+  transition: transform 340ms ease calc(var(--row, 0) * 70ms);
+}
+
+.gitlog-svg,
+.gitlog-text {
+  opacity: 0;
+  transition: opacity 260ms ease calc(var(--row, 0) * 70ms + 80ms);
+}
+
+.gitlog.is-drawn .gitlog-line {
+  transform: scaleY(1);
+}
+
+.gitlog.is-drawn .gitlog-svg,
+.gitlog.is-drawn .gitlog-text {
+  opacity: 1;
+}
+
+html[data-fx="off"] .gitlog * {
+  transition-delay: 0s !important;
+}
+
+html[data-fx="off"] .gitlog .gitlog-line {
+  transform: scaleY(1);
+}
+
+html[data-fx="off"] .gitlog .gitlog-svg,
+html[data-fx="off"] .gitlog .gitlog-text {
+  opacity: 1;
+}
+
+.gitlog-head:focus-visible {
+  outline: 2px solid rgba(157, 110, 214, 0.9);
+  outline-offset: 3px;
+  border-radius: 0.3rem;
+}

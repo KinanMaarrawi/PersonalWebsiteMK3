@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Hero from './components/Hero.jsx';
 import About from './components/About.jsx';
 import Projects from './components/Projects.jsx';
+import Experience from './components/Experience.jsx';
 import Footer from './components/Footer.jsx';
 import GlobalCursor from './components/GlobalCursor.jsx';
 import GlobalStarfield from './components/GlobalStarfield.jsx';
@@ -44,6 +45,9 @@ export function App() {
         </section>
         <section id="about">
           <About />
+        </section>
+        <section id="experience">
+          <Experience />
         </section>
         <section id="projects">
           <Projects />

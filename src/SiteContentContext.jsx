@@ -31,6 +31,7 @@ const localiseRows = rows =>
 const INITIAL = {
   projects: localiseRows(snapshot.projects),
   about: localiseRows(snapshot.about),
+  experience: snapshot.experience || [],
   settings: {
     ...snapshot.settings,
     cv_url: snapshot.assets[CV_OBJECT_PATH] || (snapshot.settings.cv_updated_at ? liveCvUrl(snapshot.settings.cv_updated_at) : COMMITTED_CV_URL)
@@ -42,6 +43,7 @@ const sameAs = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 export function SiteContentProvider({ children }) {
   const [projects, setProjects] = useState(INITIAL.projects);
   const [about, setAbout] = useState(INITIAL.about);
+  const [experience, setExperience] = useState(INITIAL.experience);
   const [settings, setSettings] = useState(INITIAL.settings);
   const [status, setStatus] = useState(isSupabaseConfigured ? 'loading' : 'snapshot');
 
@@ -61,11 +63,12 @@ export function SiteContentProvider({ children }) {
         // locally served copies and avoids re-rendering (and re-typing) anything.
         if (!live.projects.error && !sameAs(live.projects.data, snapshot.projects)) setProjects(live.projects.data);
         if (!live.about.error && !sameAs(live.about.data, snapshot.about)) setAbout(live.about.data);
+        if (!live.experience.error && !sameAs(live.experience.data, INITIAL.experience)) setExperience(live.experience.data);
         if (!live.settings.error && live.settings.data && !sameAs(live.settings.data, snapshot.settings)) {
           setSettings({ ...live.settings.data, cv_url: liveCvUrl(live.settings.data.cv_updated_at) });
         }
 
-        const anyFailure = live.projects.error || live.about.error || live.settings.error;
+        const anyFailure = live.projects.error || live.about.error || live.experience.error || live.settings.error;
         setStatus(anyFailure ? 'snapshot' : 'live');
       })
       .catch(() => {
@@ -82,7 +85,10 @@ export function SiteContentProvider({ children }) {
     };
   }, []);
 
-  const value = useMemo(() => ({ projects, about, settings, status }), [projects, about, settings, status]);
+  const value = useMemo(
+    () => ({ projects, about, experience, settings, status }),
+    [projects, about, experience, settings, status]
+  );
 
   return <SiteContentContext.Provider value={value}>{children}</SiteContentContext.Provider>;
 }
