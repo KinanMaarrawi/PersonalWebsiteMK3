@@ -259,7 +259,7 @@
       "title_ar": "مسؤول المتطوعين",
       "org_en": "Student Entrepreneurship Association",
       "org_ar": "Student Entrepreneurship Association",
-      "start_date": "2024-10-01",
+      "start_date": "2025-02-01",
       "end_date": "2026-09-01",
       "summary_en": "",
       "summary_ar": "",
@@ -272,6 +272,32 @@
         "ساعدت SEA تكبر من 0 لأكتر من 500 عضو خلال سنة دراسية وحدة.",
         "قدت تنسيق المتطوعين على الأرض والتنفيذ التشغيلي ليوم ريادة الأعمال (Entrepreneurship Day).",
         "شاركت بفعالية انكرّمت بجائزة Outstanding Activity of the Year."
+      ],
+      "learned_en": [],
+      "learned_ar": [],
+      "tech": [],
+      "project_id": null
+    },
+    {
+      "id": "47721a13-bb26-4b04-81b6-982a1015660d",
+      "kind": "role",
+      "branch": "club/sea",
+      "ref": "",
+      "title_en": "Marketing Ambassador",
+      "title_ar": "سفير تسويق",
+      "org_en": "Student Entrepreneurship Association",
+      "org_ar": "Student Entrepreneurship Association",
+      "start_date": "2024-10-01",
+      "end_date": "2025-02-01",
+      "summary_en": "",
+      "summary_ar": "",
+      "did_en": [
+        "Helped run SEA events on the ground.",
+        "Showed up reliably enough that the exec team created the Head of Volunteers role for me."
+      ],
+      "did_ar": [
+        "ساعدت بتنفيذ فعاليات SEA على الأرض.",
+        "كنت ملتزم لدرجة إنو الفريق التنفيذي عمل منصب مسؤول المتطوعين مخصوص إلي."
       ],
       "learned_en": [],
       "learned_ar": [],
@@ -293,32 +319,6 @@
       "summary_ar": "",
       "did_en": [],
       "did_ar": [],
-      "learned_en": [],
-      "learned_ar": [],
-      "tech": [],
-      "project_id": null
-    },
-    {
-      "id": "47721a13-bb26-4b04-81b6-982a1015660d",
-      "kind": "role",
-      "branch": "club/sea",
-      "ref": "",
-      "title_en": "Marketing Ambassador",
-      "title_ar": "سفير تسويق",
-      "org_en": "Student Entrepreneurship Association",
-      "org_ar": "Student Entrepreneurship Association",
-      "start_date": "2024-04-01",
-      "end_date": "2024-10-01",
-      "summary_en": "",
-      "summary_ar": "",
-      "did_en": [
-        "Helped run SEA events on the ground.",
-        "Showed up reliably enough that the exec team created the Head of Volunteers role for me."
-      ],
-      "did_ar": [
-        "ساعدت بتنفيذ فعاليات SEA على الأرض.",
-        "كنت ملتزم لدرجة إنو الفريق التنفيذي عمل منصب مسؤول المتطوعين مخصوص إلي."
-      ],
       "learned_en": [],
       "learned_ar": [],
       "tech": [],
